@@ -1,15 +1,13 @@
 import 'package:beamer/beamer.dart';
+import 'package:flaavn/widgets/playbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 import 'routes.dart';
 import 'theme.dart';
-import 'widgets/playbar/flaavn_playbar.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
 
   runApp(const ProviderScope(child: MyApp()));
 }

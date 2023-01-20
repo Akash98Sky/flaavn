@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.16.0-134.5.beta <3.0.0"
+  sdk: ">=2.16.0-134.5.beta <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -32,10 +32,11 @@ dependencies:
   beamer: ^1.4.0
   flutter_riverpod: ^1.0.3
   state_notifier: ^0.7.2+1
-  just_audio: ^0.9.20
-  firebase_core: ^1.13.1
   dio: ^4.0.5
   image_network: ^2.4.1+1
+  miniplayer: ^1.0.1
+  audioplayers: ^2.0.0
+  flutter_progressed_play_button: ^0.1.5
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

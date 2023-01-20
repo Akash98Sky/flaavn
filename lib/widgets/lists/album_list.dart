@@ -21,7 +21,7 @@ class NewAlbumList extends StatelessWidget {
         platform: TargetPlatform.linux,
       ),
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxHeight: 200),
+        constraints: const BoxConstraints(maxHeight: 230),
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: albums.length,

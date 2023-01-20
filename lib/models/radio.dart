@@ -58,7 +58,7 @@ class MoreInfo {
 
   final String? description;
   final FeaturedStationType featuredStationType;
-  final String query;
+  final String? query;
   final String? color;
   final String? language;
   final String stationDisplayText;

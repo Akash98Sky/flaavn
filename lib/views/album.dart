@@ -1,11 +1,10 @@
-import 'package:flaavn/services/cloud_funcs.dart';
-import 'package:flaavn/widgets/image_display.dart';
-import 'package:flaavn/widgets/lists/songs_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../widgets/appbar/flaavn_appbar.dart';
-import 'package:flaavn/models/album.dart';
+import '../models/album.dart';
+import '../services/cloud_funcs.dart';
+import '../widgets/lists/songs_list.dart';
 
 final _albumProvider = FutureProvider.family<AlbumDetails, String>((ref, id) {
   final cloudFuncs = ref.watch(cloudFuncsProvider);

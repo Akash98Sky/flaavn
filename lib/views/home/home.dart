@@ -1,53 +1,68 @@
 import 'package:flaavn/models/launch_data.dart';
 import 'package:flaavn/services/cloud_funcs.dart';
+import 'package:flaavn/widgets/cards/album_card.dart';
+import 'package:flaavn/widgets/cards/playlist_card.dart';
+import 'package:flaavn/widgets/lists/album_list.dart';
+import 'package:flaavn/widgets/lists/playlists_list.dart';
+import 'package:flaavn/widgets/lists/trending_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../widgets/appbar/flaavn_appbar.dart';
-import '../../widgets/lists/album_list.dart';
-import '../../widgets/lists/playlists_list.dart';
-import '../../widgets/lists/trending_list.dart';
 
-final _homeScreenProvider = FutureProvider<LaunchData>((ref) {
-  final cloudFuncs = ref.watch(cloudFuncsProvider);
+part 'page_views.dart';
 
-  return cloudFuncs.getLaunchData();
-});
-
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(_homeScreenProvider);
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
+class _HomeScreenState extends State<HomeScreen> {
+  var _curPage = 'Albums';
+  final _tabMappings = {
+    'Discover': const _DiscoverView(),
+    'Albums': const _AlbumsView(),
+    'Playlists': const _PlaylistsView(),
+  };
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: const FlaavnAppBar(),
-      body: state.when(
-        data: (data) => ListView(
-          children: [
-            NewAlbumList(albums: data.newAlbums),
-            const SizedBox(height: 20),
-            ConstrainedBox(
-              constraints: const BoxConstraints(maxHeight: 250),
-              child: TopPlayListing(
-                playlists: data.topPlaylists,
-              ),
+      body: Column(
+        children: [
+          SizedBox(
+            height: 50,
+            child: ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              children: _tabMappings.keys
+                  .map(
+                    (e) => Padding(
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 4,
+                        horizontal: 8,
+                      ),
+                      child: FilledButton(
+                        onPressed: () => setState(() {
+                          _curPage = e;
+                        }),
+                        child: Text(
+                          e,
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(),
             ),
-            const SizedBox(height: 20),
-            ConstrainedBox(
-              constraints: const BoxConstraints(maxHeight: 250),
-              child: TrendingList(
-                trendings: data.newTrending,
-              ),
-            ),
-          ],
-        ),
-        error: (err, st) {
-          debugPrint(err.toString());
-          return Text('$err');
-        },
-        loading: () => const Center(child: CircularProgressIndicator()),
+          ),
+          Expanded(
+            child: _tabMappings[_curPage]!,
+          ),
+        ],
       ),
     );
   }

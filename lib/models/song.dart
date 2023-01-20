@@ -221,7 +221,7 @@ class SongDetailsInfo {
   final String? starred;
   final String? copyrightText;
   final ArtistMap artistMap;
-  final DateTime? releaseDate;
+  final String? releaseDate;
   final String? labelUrl;
   final String? vcode;
   final String? vlink;
@@ -247,9 +247,7 @@ class SongDetailsInfo {
         starred: json['starred'],
         copyrightText: json['copyright_text'],
         artistMap: ArtistMap.fromJson(json['artistMap']),
-        releaseDate: json['release_date'] == null
-            ? null
-            : DateTime.parse(json['release_date']),
+        releaseDate: json['release_date'],
         labelUrl: json['label_url'],
         vcode: json['vcode'],
         vlink: json['vlink'],
@@ -274,9 +272,7 @@ class SongDetailsInfo {
         'starred': starred,
         'copyright_text': copyrightText,
         'artistMap': artistMap.toJson(),
-        'release_date': releaseDate == null
-            ? null
-            : "${releaseDate!.year.toString().padLeft(4, '0')}-${releaseDate!.month.toString().padLeft(2, '0')}-${releaseDate!.day.toString().padLeft(2, '0')}",
+        'release_date': releaseDate,
         'label_url': labelUrl,
         'vcode': vcode,
         'vlink': vlink,
