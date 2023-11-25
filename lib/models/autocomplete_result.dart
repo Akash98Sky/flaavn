@@ -1,3 +1,5 @@
+import 'package:flaavn/models/chart.dart';
+
 import 'album.dart';
 import 'artist.dart';
 import 'json_model.dart';
@@ -9,8 +11,8 @@ class AutocompleteResult {
     this.albums = const AutocompleteData<Album>(),
     this.songs = const AutocompleteData<Song>(),
     this.playlists = const AutocompleteData<Playlist>(),
-    this.artists = const AutocompleteData(),
-    this.topquery = const AutocompleteData(),
+    this.artists = const AutocompleteData<Artist>(),
+    this.topquery = const AutocompleteData<Chart>(),
     this.shows = const AutocompleteData(),
     this.episodes = const AutocompleteData(),
   });
@@ -19,7 +21,7 @@ class AutocompleteResult {
   final AutocompleteData<Song> songs;
   final AutocompleteData<Playlist> playlists;
   final AutocompleteData<Artist> artists;
-  final AutocompleteData topquery;
+  final AutocompleteData<Chart> topquery;
   final AutocompleteData shows;
   final AutocompleteData episodes;
 
@@ -43,7 +45,7 @@ class AutocompleteResult {
         ),
         topquery: AutocompleteData.fromJson(
           json['topquery'],
-          (data) => JsonMapModel.fromJson(data),
+          (data) => Chart.fromJson(data),
         ),
         shows: AutocompleteData.fromJson(
           json['shows'],

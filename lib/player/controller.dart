@@ -33,6 +33,8 @@ class FlaavnPlayerController {
           ? _queue[_queuePosition].moreInfo.mediaUrl!.high
           : null;
 
+  Future<Duration?> get currentMediaDuration => _player.getDuration();
+
   Future<void> play() => _player.play(UrlSource(currentMediaUrl!));
 
   Future<void> pause() => _player.pause();

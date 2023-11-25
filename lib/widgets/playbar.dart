@@ -19,7 +19,7 @@ class FlaavnPlayBar extends ConsumerWidget {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return Miniplayer(
-              minHeight: 150,
+              minHeight: 100,
               maxHeight: 500,
               builder: (height, percentage) {
                 if (percentage > 0.2) {

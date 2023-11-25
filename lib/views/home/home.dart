@@ -49,10 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         onPressed: () => setState(() {
                           _curPage = e;
                         }),
-                        child: Text(
-                          e,
-                          style: Theme.of(context).textTheme.headline6,
-                        ),
+                        child: Text(e),
                       ),
                     ),
                   )

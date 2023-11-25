@@ -12,7 +12,7 @@ class ImageDisplay extends StatelessWidget {
       return Image.network(url);
     }
     return ClipRRect(
-      borderRadius: borderRadius,
+      borderRadius: borderRadius ?? BorderRadius.zero,
       child: Image.network(
         url,
         fit: BoxFit.cover,

@@ -1,10 +1,10 @@
-import 'package:beamer/beamer.dart';
 import 'package:flaavn/widgets/playbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 import 'routes.dart';
-import 'theme.dart';
+import 'theme/color_schemes.g.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,7 +20,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: 'Flaavn Music',
-      theme: appTheme,
+      theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
+      darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
       builder: (context, child) => Stack(
         children: [
           if (child != null) child,
@@ -30,8 +31,10 @@ class MyApp extends StatelessWidget {
           ),
         ],
       ),
-      routeInformationParser: BeamerParser(),
-      routerDelegate: routerDelegate,
+      routerConfig: GoRouter(
+        routes: $appRoutes,
+        initialLocation: '/',
+      ),
     );
   }
 }

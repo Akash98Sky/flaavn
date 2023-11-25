@@ -11,24 +11,23 @@ class TopPlaylistCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 160,
-      child: GestureDetector(
-        onTap: () => goToPlaylist(context, playlist.id),
-        child: Column(
-          children: [
-            ImageDisplay(
+    return GestureDetector(
+      onTap: () => goToPlaylist(context, playlist.id),
+      child: Column(
+        children: [
+          Expanded(
+            child: ImageDisplay(
               playlist.image,
               borderRadius: BorderRadius.circular(100),
             ),
-            Text(playlist.title, maxLines: 1, overflow: TextOverflow.ellipsis),
-            Text(
-              playlist.subtitle,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
-        ),
+          ),
+          Text(playlist.title, maxLines: 1, overflow: TextOverflow.ellipsis),
+          Text(
+            playlist.subtitle,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
       ),
     );
   }

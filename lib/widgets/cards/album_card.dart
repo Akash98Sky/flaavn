@@ -19,11 +19,9 @@ class NewAlbumCard extends StatelessWidget {
           height: 160,
           width: 160,
           decoration: BoxDecoration(
-            color: Colors.white,
             boxShadow: const [
               BoxShadow(
                 blurRadius: 4,
-                color: Color(0x34090F13),
                 offset: Offset(0, 2),
               )
             ],
@@ -45,7 +43,6 @@ class NewAlbumCard extends StatelessWidget {
                     album.title,
                     style: const TextStyle(
                       fontFamily: 'Outfit',
-                      color: Color(0xFF101213),
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                       overflow: TextOverflow.ellipsis,
@@ -59,7 +56,6 @@ class NewAlbumCard extends StatelessWidget {
                     album.subtitle ?? '',
                     style: const TextStyle(
                       fontFamily: 'Outfit',
-                      color: Color(0xFF57636C),
                       fontSize: 12,
                       fontWeight: FontWeight.normal,
                     ),

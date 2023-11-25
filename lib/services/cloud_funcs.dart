@@ -7,6 +7,7 @@ import 'package:flaavn/models/song.dart';
 import 'package:flaavn/services/api_client.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../models/autocomplete_result.dart';
 import '../models/launch_data.dart';
 
 final cloudFuncsProvider = Provider<ServerlessFuncs>((ref) {
@@ -35,9 +36,11 @@ class ServerlessFuncs {
     });
 
     if (res != null) {
-      return (res['data'] as List)
+      final d = (res['data']['songs'] as List)
           .map<SongDetails>((song) => SongDetails.fromJson(song))
           .toList(growable: false);
+
+      return d;
     }
 
     return [];
@@ -61,5 +64,15 @@ class ServerlessFuncs {
     }
 
     return AlbumDetails(id: albumid, title: '');
+  }
+
+  Future<AutocompleteResult> getSearchAutocomplete(String query) async {
+    final res = await _client.requestGetJson('/autocomplete?query=' + query);
+
+    if (res != null) {
+      return AutocompleteResult.fromJson(res['data']);
+    } else {
+      return AutocompleteResult();
+    }
   }
 }

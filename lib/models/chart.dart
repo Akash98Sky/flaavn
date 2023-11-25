@@ -1,4 +1,6 @@
-class Chart {
+import 'json_model.dart';
+
+class Chart extends JsonModel {
   Chart({
     required this.id,
     required this.title,
@@ -17,7 +19,7 @@ class Chart {
   final String type;
   final String image;
   final String permaUrl;
-  final ChartMoreInfo moreInfo;
+  final ChartMoreInfo? moreInfo;
   final String? explicitContent;
   final bool? miniObj;
 
@@ -28,11 +30,14 @@ class Chart {
         type: json['type'],
         image: json['image'],
         permaUrl: json['perma_url'],
-        moreInfo: ChartMoreInfo.fromJson(json['more_info']),
+        moreInfo: json['more_info'] == null
+            ? null
+            : ChartMoreInfo.fromJson(json['more_info']),
         explicitContent: json['explicit_content'],
         miniObj: json['mini_obj'],
       );
 
+  @override
   Map<String, dynamic> toJson() => {
         'id': id,
         'title': title,
@@ -40,7 +45,7 @@ class Chart {
         'type': type,
         'image': image,
         'perma_url': permaUrl,
-        'more_info': moreInfo.toJson(),
+        'more_info': moreInfo?.toJson(),
         'explicit_content': explicitContent,
         'mini_obj': miniObj,
       };

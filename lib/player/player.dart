@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:developer';
 
+import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
@@ -11,9 +13,11 @@ class FlaavnPlayer extends StatefulWidget {
   final FlaavnPlayerController controller;
   final bool miniPlayer;
 
-  const FlaavnPlayer(
-      {Key? key, required this.controller, this.miniPlayer = false})
-      : super(key: key);
+  const FlaavnPlayer({
+    Key? key,
+    required this.controller,
+    this.miniPlayer = false,
+  }) : super(key: key);
 
   @override
   State<FlaavnPlayer> createState() => _FlaavnPlayerState();
@@ -21,8 +25,6 @@ class FlaavnPlayer extends StatefulWidget {
 
 class _FlaavnPlayerState extends State<FlaavnPlayer> {
   SongDetails? _currentSong;
-  final Duration _position = Duration.zero;
-  final Duration _duration = Duration.zero;
   final _subscriptions = <StreamSubscription>[];
 
   @override
@@ -30,16 +32,6 @@ class _FlaavnPlayerState extends State<FlaavnPlayer> {
     widget.controller.init();
     _currentSong = widget.controller.currentMedia;
     _subscriptions.addAll([
-      // widget.controller.onPositionChanged.listen((position) {
-      //   setState(() {
-      //     _position = position;
-      //   });
-      // }),
-      // widget.controller.onDurationChanged.listen((duration) {
-      //   setState(() {
-      //     _duration = duration;
-      //   });
-      // }),
       widget.controller.onMediaChanged.listen((song) {
         debugPrint('Media changed: $song');
         setState(() {
@@ -65,14 +57,32 @@ class _FlaavnPlayerState extends State<FlaavnPlayer> {
       return Container();
     }
 
-    final progress = _position.inMilliseconds / _duration.inMilliseconds;
-
     if (!widget.miniPlayer) {
       return Column(
         children: [
           Expanded(child: ImageDisplay(_currentSong!.image!.high)),
           Text(_currentSong!.title),
           Text(_currentSong!.subtitle ?? ''),
+          StreamBuilder<Duration>(
+            stream: widget.controller.onDurationChanged,
+            initialData: Duration.zero,
+            builder: (context, totalDurationSnap) {
+              return StreamBuilder<Duration>(
+                stream: widget.controller.onPositionChanged,
+                initialData: totalDurationSnap.data!,
+                builder: (context, snapshot) {
+                  return Padding(
+                    padding: const EdgeInsets.all(18.0),
+                    child: ProgressBar(
+                      progress: snapshot.data!,
+                      total: totalDurationSnap.data!,
+                      onSeek: (duration) => widget.controller.seek(duration),
+                    ),
+                  );
+                },
+              );
+            },
+          ),
           StreamBuilder<PlayerState>(
             stream: widget.controller.onPlayerStateChanged,
             initialData: widget.controller.playerState,

@@ -1,25 +1,60 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import 'views/album.dart';
 import 'views/home/home.dart';
 import 'views/playlist.dart';
+import 'views/search.dart';
 
-final routerDelegate = BeamerDelegate(
-  locationBuilder: RoutesLocationBuilder(
-    routes: {
-      // Return either Widgets or BeamPages if more customization is needed
-      '/': (context, state, data) => const HomeScreen(),
-      '/album/:id': (context, state, data) {
-        return AlbumScreen(albumId: state.pathParameters['id']!);
-      },
-      '/playlist/:id': (context, state, data) {
-        return PlaylistScreen(playlistId: state.pathParameters['id']!);
-      },
-    },
-  ),
-);
+part 'routes.g.dart';
 
-void goToAlbum(BuildContext ctx, String id) => ctx.beamToNamed('/album/$id');
+void goToAlbum(BuildContext ctx, String id) =>
+    ctx.go(AlbumRoute(id: id).location);
+
 void goToPlaylist(BuildContext ctx, String id) =>
-    ctx.beamToNamed('/playlist/$id');
+    ctx.go(PlaylistRoute(id: id).location);
+
+@TypedGoRoute<HomeScreenRoute>(
+  path: '/',
+  routes: <TypedGoRoute<GoRouteData>>[
+    TypedGoRoute<AlbumRoute>(path: 'album/:id'),
+    TypedGoRoute<PlaylistRoute>(path: 'playlist/:id'),
+    TypedGoRoute<SearchScreenRoute>(path: 'search'),
+  ],
+)
+class HomeScreenRoute extends GoRouteData {
+  const HomeScreenRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => const HomeScreen();
+}
+
+class AlbumRoute extends GoRouteData {
+  final String id;
+
+  const AlbumRoute({required this.id});
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      AlbumScreen(albumId: id);
+}
+
+class PlaylistRoute extends GoRouteData {
+  final String id;
+
+  const PlaylistRoute({required this.id});
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      PlaylistScreen(playlistId: id);
+}
+
+class SearchScreenRoute extends GoRouteData {
+  final String? query;
+
+  const SearchScreenRoute({this.query});
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) =>
+      SearchScreen(query: query);
+}
