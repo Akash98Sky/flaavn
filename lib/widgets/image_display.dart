@@ -9,7 +9,10 @@ class ImageDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (borderRadius == null) {
-      return Image.network(url);
+      return Image.network(
+        url,
+        fit: BoxFit.cover,
+      );
     }
     return ClipRRect(
       borderRadius: borderRadius ?? BorderRadius.zero,
