@@ -8,14 +8,16 @@ class FlaavnAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(boxShadow: [
-        BoxShadow(
-          offset: const Offset(0, -5),
-          spreadRadius: 5,
-          blurRadius: 10,
-          color: Theme.of(context).shadowColor,
-        ),
-      ]),
+      decoration: BoxDecoration(
+        boxShadow: const [
+          BoxShadow(
+            offset: Offset(0, -5),
+            spreadRadius: 5,
+            blurRadius: 10,
+          ),
+        ],
+        color: Theme.of(context).primaryColor,
+      ),
       child: SafeArea(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

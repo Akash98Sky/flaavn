@@ -13,14 +13,14 @@ import '../../widgets/appbar/flaavn_appbar.dart';
 part 'page_views.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var _curPage = 'Albums';
+  var _curPage = 'Discover';
   final _tabMappings = {
     'Discover': const _DiscoverView(),
     'Albums': const _AlbumsView(),
@@ -33,11 +33,9 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: const FlaavnAppBar(),
       body: Column(
         children: [
-          SizedBox(
-            height: 50,
-            child: ListView(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5.0),
+            child: Row(
               children: _tabMappings.keys
                   .map(
                     (e) => Padding(
@@ -45,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         vertical: 4,
                         horizontal: 8,
                       ),
-                      child: FilledButton(
+                      child: OutlinedButton(
                         onPressed: () => setState(() {
                           _curPage = e;
                         }),
@@ -56,9 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   .toList(),
             ),
           ),
-          Expanded(
-            child: _tabMappings[_curPage]!,
-          ),
+          Expanded(child: _tabMappings[_curPage]!),
         ],
       ),
     );

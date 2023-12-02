@@ -4,19 +4,21 @@ import 'package:go_router/go_router.dart';
 class FlaavnSearchBar extends StatelessWidget implements PreferredSizeWidget {
   final void Function(String) onSearch;
 
-  const FlaavnSearchBar({Key? key, required this.onSearch}) : super(key: key);
+  const FlaavnSearchBar({super.key, required this.onSearch});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(boxShadow: [
-        BoxShadow(
-          offset: const Offset(0, -5),
-          spreadRadius: 5,
-          blurRadius: 10,
-          color: Theme.of(context).shadowColor,
-        ),
-      ]),
+      decoration: BoxDecoration(
+        boxShadow: const [
+          BoxShadow(
+            offset: Offset(0, -5),
+            spreadRadius: 5,
+            blurRadius: 10,
+          ),
+        ],
+        color: Theme.of(context).primaryColor,
+      ),
       child: SafeArea(
         child: Row(
           children: [
@@ -35,6 +37,9 @@ class FlaavnSearchBar extends StatelessWidget implements PreferredSizeWidget {
                   hintText: 'Search',
                   hintStyle: Theme.of(context).textTheme.bodySmall,
                   filled: true,
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
                 ),
                 onSubmitted: onSearch,
               ),

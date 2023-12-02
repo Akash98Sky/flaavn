@@ -7,7 +7,7 @@ final _discoverProvider = FutureProvider<LaunchData>((ref) {
 });
 
 class _DiscoverView extends ConsumerWidget {
-  const _DiscoverView({Key? key}) : super(key: key);
+  const _DiscoverView();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -43,7 +43,7 @@ class _DiscoverView extends ConsumerWidget {
 }
 
 class _AlbumsView extends ConsumerWidget {
-  const _AlbumsView({Key? key}) : super(key: key);
+  const _AlbumsView();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -51,16 +51,13 @@ class _AlbumsView extends ConsumerWidget {
     final state = ref.watch(_discoverProvider);
 
     return state.when(
-      data: (data) => GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-        ),
-        itemCount: data.newAlbums.length,
-        itemBuilder: (context, index) => SqCleAlbumCard(
-          album: data.newAlbums[index],
-        ),
+      data: (data) => GridView.count(
+        crossAxisCount: 2,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        children: data.newAlbums
+            .map((album) => SqCleAlbumCard(album: album))
+            .toList(growable: false),
       ),
       error: (err, st) {
         debugPrint(err.toString());
@@ -72,7 +69,7 @@ class _AlbumsView extends ConsumerWidget {
 }
 
 class _PlaylistsView extends ConsumerWidget {
-  const _PlaylistsView({Key? key}) : super(key: key);
+  const _PlaylistsView();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

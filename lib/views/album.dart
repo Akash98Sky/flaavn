@@ -15,7 +15,7 @@ final _albumProvider = FutureProvider.family<AlbumDetails, String>((ref, id) {
 class AlbumScreen extends ConsumerWidget {
   final String albumId;
 
-  const AlbumScreen({Key? key, required this.albumId}) : super(key: key);
+  const AlbumScreen({super.key, required this.albumId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

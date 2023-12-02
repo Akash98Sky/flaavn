@@ -1,5 +1,4 @@
 import 'package:flaavn/services/cloud_funcs.dart';
-import 'package:flaavn/widgets/image_display.dart';
 import 'package:flaavn/widgets/lists/songs_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

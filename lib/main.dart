@@ -9,11 +9,17 @@ import 'theme/color_schemes.g.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final GoRouter router;
+
+  MyApp({super.key})
+      : router = GoRouter(
+          routes: $appRoutes,
+          initialLocation: '/',
+        );
 
   // This widget is the root of your application.
   @override
@@ -22,6 +28,7 @@ class MyApp extends StatelessWidget {
       title: 'Flaavn Music',
       theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
       darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
+      themeMode: ThemeMode.light,
       builder: (context, child) => Stack(
         children: [
           if (child != null) child,
@@ -31,10 +38,7 @@ class MyApp extends StatelessWidget {
           ),
         ],
       ),
-      routerConfig: GoRouter(
-        routes: $appRoutes,
-        initialLocation: '/',
-      ),
+      routerConfig: router,
     );
   }
 }

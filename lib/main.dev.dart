@@ -14,9 +14,7 @@ void main() async {
       // which will center all the widgets on the center of the screen
       .decorator(CenterDecorator())
       // The Widget story can have as many chapters as needed
-      .add('default', (ctx) {
-        return const MyApp();
-      });
+      .add('default', (ctx) => MyApp());
 
   // Since dashbook is a widget itself, you can just call runApp passing it as a parameter
   runApp(ProviderScope(child: dashbook));
