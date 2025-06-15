@@ -1,8 +1,7 @@
 part of 'home.dart';
 
-final _discoverProvider = FutureProvider<LaunchData>((ref) {
-  final cloudFuncs = ref.watch(cloudFuncsProvider);
-
+final _discoverProvider = FutureProvider.autoDispose<LaunchData>((ref) {
+  final cloudFuncs = ServerlessFuncs();
   return cloudFuncs.getLaunchData();
 });
 
@@ -34,8 +33,10 @@ class _DiscoverView extends ConsumerWidget {
         ],
       ),
       error: (err, st) {
-        debugPrint(err.toString());
-        return Text('$err');
+        log(err.toString());
+        return NetworkError(onRetry: () {
+          ref.invalidate(_discoverProvider);
+        });
       },
       loading: () => const Center(child: CircularProgressIndicator()),
     );
@@ -60,8 +61,10 @@ class _AlbumsView extends ConsumerWidget {
             .toList(growable: false),
       ),
       error: (err, st) {
-        debugPrint(err.toString());
-        return Text('$err');
+        log(err.toString());
+        return NetworkError(onRetry: () {
+          ref.invalidate(_discoverProvider);
+        });
       },
       loading: () => const Center(child: CircularProgressIndicator()),
     );
@@ -89,8 +92,10 @@ class _PlaylistsView extends ConsumerWidget {
         ),
       ),
       error: (err, st) {
-        debugPrint(err.toString());
-        return Text('$err');
+        log(err.toString());
+        return NetworkError(onRetry: () {
+          ref.invalidate(_discoverProvider);
+        });
       },
       loading: () => const Center(child: CircularProgressIndicator()),
     );

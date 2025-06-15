@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class SongsList extends ConsumerWidget {
   final List<SongDetails> songs;
 
-  const SongsList({Key? key, required this.songs}) : super(key: key);
+  const SongsList({super.key, required this.songs});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

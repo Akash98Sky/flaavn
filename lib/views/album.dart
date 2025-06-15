@@ -7,8 +7,7 @@ import '../services/cloud_funcs.dart';
 import '../widgets/lists/songs_list.dart';
 
 final _albumProvider = FutureProvider.family<AlbumDetails, String>((ref, id) {
-  final cloudFuncs = ref.watch(cloudFuncsProvider);
-
+  final cloudFuncs = ServerlessFuncs();
   return cloudFuncs.getAlbum(id);
 });
 

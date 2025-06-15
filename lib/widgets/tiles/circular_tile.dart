@@ -9,12 +9,12 @@ class CircularTile extends StatelessWidget {
   final VoidCallback onTap;
 
   const CircularTile({
-    Key? key,
+    super.key,
     required this.title,
     required this.subtitle,
     required this.image,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -12,15 +12,14 @@ import '../../services/cloud_funcs.dart';
 import '../tiles/circular_tile.dart';
 
 final _songsProvider = FutureProvider.family<SongDetails, String>((ref, id) {
-  final cloudFuncs = ref.watch(cloudFuncsProvider);
-
+  final cloudFuncs = ServerlessFuncs();
   return cloudFuncs.getSongs([id]).then((value) => value.first);
 });
 
 class TopQueryList extends ConsumerWidget {
   final List<Chart> topquery;
 
-  const TopQueryList({Key? key, required this.topquery}) : super(key: key);
+  const TopQueryList({super.key, required this.topquery});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

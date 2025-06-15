@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:flaavn/main.dart';
 import 'package:flutter/material.dart';
 import 'package:dashbook/dashbook.dart';

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class FlaavnAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const FlaavnAppBar({Key? key}) : super(key: key);
+  const FlaavnAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {

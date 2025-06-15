@@ -1,19 +1,12 @@
 import 'package:dio/dio.dart';
-import 'package:flaavn/constants/strings.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-final apiClientProvider =
-    ProviderFamily<ApiClient, String>((ref, url) => ApiClient(url));
 
 class ApiClient {
   final Dio _client;
 
-  ApiClient(String baseUrl)
+  ApiClient(String baseUrl, {String? apiUserAgent})
       : _client = Dio(BaseOptions(
           baseUrl: baseUrl,
-          headers: {
-            'User-Agent': apiUserAgent,
-          },
+          headers: apiUserAgent != null ? {'User-Agent': apiUserAgent} : {},
         ));
 
   Future<String?> requestGetRaw(

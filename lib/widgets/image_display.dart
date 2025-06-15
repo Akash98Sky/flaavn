@@ -4,7 +4,7 @@ class ImageDisplay extends StatelessWidget {
   final String url;
   final BorderRadius? borderRadius;
 
-  const ImageDisplay(this.url, {Key? key, this.borderRadius}) : super(key: key);
+  const ImageDisplay(this.url, {super.key, this.borderRadius});
 
   @override
   Widget build(BuildContext context) {

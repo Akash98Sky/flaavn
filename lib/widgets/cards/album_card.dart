@@ -7,7 +7,7 @@ import '../../routes.dart';
 class NewAlbumCard extends StatelessWidget {
   final AlbumDetails album;
 
-  const NewAlbumCard({Key? key, required this.album}) : super(key: key);
+  const NewAlbumCard({super.key, required this.album});
 
   @override
   Widget build(BuildContext context) {

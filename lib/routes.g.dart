@@ -12,97 +12,123 @@ List<RouteBase> get $appRoutes => [
 
 RouteBase get $homeScreenRoute => GoRouteData.$route(
       path: '/',
-      factory: $HomeScreenRouteExtension._fromState,
+      factory: _$HomeScreenRoute._fromState,
       routes: [
         GoRouteData.$route(
           path: 'album/:id',
-          factory: $AlbumRouteExtension._fromState,
+          factory: _$AlbumRoute._fromState,
         ),
         GoRouteData.$route(
           path: 'playlist/:id',
-          factory: $PlaylistRouteExtension._fromState,
+          factory: _$PlaylistRoute._fromState,
         ),
         GoRouteData.$route(
           path: 'search',
-          factory: $SearchScreenRouteExtension._fromState,
+          factory: _$SearchScreenRoute._fromState,
         ),
       ],
     );
 
-extension $HomeScreenRouteExtension on HomeScreenRoute {
+mixin _$HomeScreenRoute on GoRouteData {
   static HomeScreenRoute _fromState(GoRouterState state) =>
       const HomeScreenRoute();
 
+  @override
   String get location => GoRouteData.$location(
         '/',
       );
 
+  @override
   void go(BuildContext context) => context.go(location);
 
+  @override
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
+  @override
   void pushReplacement(BuildContext context) =>
       context.pushReplacement(location);
 
+  @override
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $AlbumRouteExtension on AlbumRoute {
+mixin _$AlbumRoute on GoRouteData {
   static AlbumRoute _fromState(GoRouterState state) => AlbumRoute(
         id: state.pathParameters['id']!,
       );
 
+  AlbumRoute get _self => this as AlbumRoute;
+
+  @override
   String get location => GoRouteData.$location(
-        '/album/${Uri.encodeComponent(id)}',
+        '/album/${Uri.encodeComponent(_self.id)}',
       );
 
+  @override
   void go(BuildContext context) => context.go(location);
 
+  @override
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
+  @override
   void pushReplacement(BuildContext context) =>
       context.pushReplacement(location);
 
+  @override
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $PlaylistRouteExtension on PlaylistRoute {
+mixin _$PlaylistRoute on GoRouteData {
   static PlaylistRoute _fromState(GoRouterState state) => PlaylistRoute(
         id: state.pathParameters['id']!,
       );
 
+  PlaylistRoute get _self => this as PlaylistRoute;
+
+  @override
   String get location => GoRouteData.$location(
-        '/playlist/${Uri.encodeComponent(id)}',
+        '/playlist/${Uri.encodeComponent(_self.id)}',
       );
 
+  @override
   void go(BuildContext context) => context.go(location);
 
+  @override
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
+  @override
   void pushReplacement(BuildContext context) =>
       context.pushReplacement(location);
 
+  @override
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $SearchScreenRouteExtension on SearchScreenRoute {
+mixin _$SearchScreenRoute on GoRouteData {
   static SearchScreenRoute _fromState(GoRouterState state) => SearchScreenRoute(
         query: state.uri.queryParameters['query'],
       );
 
+  SearchScreenRoute get _self => this as SearchScreenRoute;
+
+  @override
   String get location => GoRouteData.$location(
         '/search',
         queryParams: {
-          if (query != null) 'query': query,
+          if (_self.query != null) 'query': _self.query,
         },
       );
 
+  @override
   void go(BuildContext context) => context.go(location);
 
+  @override
   Future<T?> push<T>(BuildContext context) => context.push<T>(location);
 
+  @override
   void pushReplacement(BuildContext context) =>
       context.pushReplacement(location);
 
+  @override
   void replace(BuildContext context) => context.replace(location);
 }

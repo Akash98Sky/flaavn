@@ -14,10 +14,10 @@ class FlaavnPlayer extends StatefulWidget {
   final bool miniPlayer;
 
   const FlaavnPlayer({
-    Key? key,
+    super.key,
     required this.controller,
     this.miniPlayer = false,
-  }) : super(key: key);
+  });
 
   @override
   State<FlaavnPlayer> createState() => _FlaavnPlayerState();
@@ -181,8 +181,7 @@ class PlayerControls extends StatelessWidget {
   final void Function()? onPause;
 
   const PlayerControls(
-      {Key? key, this.onPlay, this.onPause, required this.state})
-      : super(key: key);
+      {super.key, this.onPlay, this.onPause, required this.state});
 
   @override
   Widget build(BuildContext context) {

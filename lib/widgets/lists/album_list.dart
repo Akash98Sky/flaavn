@@ -7,7 +7,7 @@ import '../cards/album_card.dart';
 class NewAlbumList extends StatelessWidget {
   final List<AlbumDetails> albums;
 
-  const NewAlbumList({Key? key, required this.albums}) : super(key: key);
+  const NewAlbumList({super.key, required this.albums});
 
   @override
   Widget build(BuildContext context) {

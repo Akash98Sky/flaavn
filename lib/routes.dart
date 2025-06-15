@@ -22,14 +22,14 @@ void goToPlaylist(BuildContext ctx, String id) =>
     TypedGoRoute<SearchScreenRoute>(path: 'search'),
   ],
 )
-class HomeScreenRoute extends GoRouteData {
+class HomeScreenRoute extends GoRouteData with _$HomeScreenRoute {
   const HomeScreenRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) => const HomeScreen();
 }
 
-class AlbumRoute extends GoRouteData {
+class AlbumRoute extends GoRouteData with _$AlbumRoute {
   final String id;
 
   const AlbumRoute({required this.id});
@@ -39,7 +39,7 @@ class AlbumRoute extends GoRouteData {
       AlbumScreen(albumId: id);
 }
 
-class PlaylistRoute extends GoRouteData {
+class PlaylistRoute extends GoRouteData with _$PlaylistRoute {
   final String id;
 
   const PlaylistRoute({required this.id});
@@ -49,7 +49,7 @@ class PlaylistRoute extends GoRouteData {
       PlaylistScreen(playlistId: id);
 }
 
-class SearchScreenRoute extends GoRouteData {
+class SearchScreenRoute extends GoRouteData with _$SearchScreenRoute {
   final String? query;
 
   const SearchScreenRoute({this.query});

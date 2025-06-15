@@ -10,7 +10,7 @@ import '../widgets/lists/topquery_list.dart';
 
 final _searchProvider =
     FutureProvider.family<AutocompleteResult, String?>((ref, query) {
-  final cloudFuncs = ref.watch(cloudFuncsProvider);
+  final cloudFuncs = ServerlessFuncs();
   if (query != null) {
     return cloudFuncs.getSearchAutocomplete(query);
   }
@@ -20,7 +20,7 @@ final _searchProvider =
 class SearchScreen extends ConsumerWidget {
   final String? query;
 
-  const SearchScreen({Key? key, this.query}) : super(key: key);
+  const SearchScreen({super.key, this.query});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

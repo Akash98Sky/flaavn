@@ -5,7 +5,7 @@ import 'package:flutter/widgets.dart';
 class TrendingCard extends StatelessWidget {
   final NewTrending trending;
 
-  const TrendingCard({Key? key, required this.trending}) : super(key: key);
+  const TrendingCard({super.key, required this.trending});
 
   @override
   Widget build(BuildContext context) {

@@ -8,15 +8,14 @@ import 'package:flaavn/models/playlist.dart';
 
 final _playlistProvider =
     FutureProvider.family<PlaylistDetails, String>((ref, id) {
-  final cloudFuncs = ref.watch(cloudFuncsProvider);
-
+  final cloudFuncs = ServerlessFuncs();
   return cloudFuncs.getPlaylist(id);
 });
 
 class PlaylistScreen extends ConsumerWidget {
   final String playlistId;
 
-  const PlaylistScreen({Key? key, required this.playlistId}) : super(key: key);
+  const PlaylistScreen({super.key, required this.playlistId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

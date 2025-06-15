@@ -6,7 +6,7 @@ import 'package:miniplayer/miniplayer.dart';
 import 'package:flaavn/player/player.dart';
 
 class FlaavnPlayBar extends ConsumerWidget {
-  const FlaavnPlayBar({Key? key}) : super(key: key);
+  const FlaavnPlayBar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

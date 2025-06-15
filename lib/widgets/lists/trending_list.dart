@@ -7,7 +7,7 @@ import '../cards/trending_card.dart';
 class TrendingList extends StatelessWidget {
   final List<NewTrending> trendings;
 
-  const TrendingList({Key? key, required this.trendings}) : super(key: key);
+  const TrendingList({super.key, required this.trendings});
 
   @override
   Widget build(BuildContext context) {

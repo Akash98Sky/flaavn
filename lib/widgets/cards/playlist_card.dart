@@ -7,7 +7,7 @@ import '../../routes.dart';
 class TopPlaylistCard extends StatelessWidget {
   final TopPlaylist playlist;
 
-  const TopPlaylistCard({Key? key, required this.playlist}) : super(key: key);
+  const TopPlaylistCard({super.key, required this.playlist});
 
   @override
   Widget build(BuildContext context) {
