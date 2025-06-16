@@ -13,13 +13,15 @@ class SongsList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.read(playerControllerProvider);
 
-    return ListView.builder(
-      itemCount: songs.length,
-      itemBuilder: (context, index) => ListTile(
-        leading: ImageDisplay(songs[index].image!.high),
-        title: Text(songs[index].title),
-        subtitle: Text(songs[index].subtitle ?? ''),
-        onTap: () => controller.setQueue([songs[index]]),
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) => ListTile(
+          leading: ImageDisplay(songs[index].image!.high),
+          title: Text(songs[index].title),
+          subtitle: Text(songs[index].subtitle ?? ''),
+          onTap: () => controller.setQueue([songs[index]]),
+        ),
+        childCount: songs.length,
       ),
     );
   }

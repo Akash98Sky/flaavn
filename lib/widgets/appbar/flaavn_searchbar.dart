@@ -1,55 +1,78 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
-class FlaavnSearchBar extends StatelessWidget implements PreferredSizeWidget {
+class FlaavnSearchBar extends StatefulWidget implements PreferredSizeWidget {
   final void Function(String) onSearch;
+  final String? initialText;
 
-  const FlaavnSearchBar({super.key, required this.onSearch});
+  const FlaavnSearchBar({
+    super.key,
+    required this.onSearch,
+    this.initialText,
+  });
+
+  @override
+  State<FlaavnSearchBar> createState() => _FlaavnSearchBarState();
+
+  @override
+  Size get preferredSize => const Size(double.infinity, 70);
+}
+
+class _FlaavnSearchBarState extends State<FlaavnSearchBar> {
+  late TextEditingController _searchController;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController = TextEditingController(text: widget.initialText);
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        boxShadow: const [
-          BoxShadow(
-            offset: Offset(0, -5),
-            spreadRadius: 5,
-            blurRadius: 10,
-          ),
-        ],
-        color: Theme.of(context).primaryColor,
-      ),
+      color: Theme.of(context).scaffoldBackgroundColor,
       child: SafeArea(
-        child: Row(
-          children: [
-            InkWell(
-              onTap: () => context.canPop() ? context.pop() : null,
-              child: const Padding(
-                padding: EdgeInsets.all(8.0),
-                child: Icon(Icons.arrow_back, size: 25),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: TextField(
+            controller: _searchController,
+            style: Theme.of(context).textTheme.bodySmall,
+            decoration: InputDecoration(
+              hintText: 'Search',
+              hintStyle: Theme.of(context).textTheme.bodySmall,
+              filled: true,
+              fillColor: Theme.of(context).cardColor,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+                borderSide: BorderSide.none,
               ),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
+              prefixIcon: Icon(Icons.search,
+                  color: Theme.of(context).textTheme.bodySmall?.color),
+              suffixIcon: _searchController.text.isNotEmpty
+                  ? IconButton(
+                      icon: Icon(Icons.close,
+                          color: Theme.of(context).textTheme.bodySmall?.color),
+                      onPressed: () {
+                        _searchController.clear();
+                        widget.onSearch('');
+                        setState(() {});
+                      },
+                    )
+                  : null,
             ),
-            Expanded(
-              child: TextField(
-                style: Theme.of(context).textTheme.bodySmall,
-                // Make it rounded bordered with a search input hint
-                decoration: InputDecoration(
-                  hintText: 'Search',
-                  hintStyle: Theme.of(context).textTheme.bodySmall,
-                  filled: true,
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 10.0),
-                ),
-                onSubmitted: onSearch,
-              ),
-            ),
-          ],
+            onChanged: (text) {
+              setState(() {});
+            },
+            onSubmitted: widget.onSearch,
+          ),
         ),
       ),
     );
   }
-
-  @override
-  Size get preferredSize => const Size(double.infinity, 100);
 }

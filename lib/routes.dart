@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import 'views/album.dart';
-import 'views/home/home.dart';
+import 'views/home.dart';
 import 'views/playlist.dart';
 import 'views/search.dart';
 
