@@ -7,27 +7,37 @@ part of 'routes.dart';
 // **************************************************************************
 
 List<RouteBase> get $appRoutes => [
-      $homeScreenRoute,
+      $flaavnShellRouteData,
     ];
 
-RouteBase get $homeScreenRoute => GoRouteData.$route(
-      path: '/',
-      factory: _$HomeScreenRoute._fromState,
+RouteBase get $flaavnShellRouteData => ShellRouteData.$route(
+      factory: $FlaavnShellRouteDataExtension._fromState,
       routes: [
         GoRouteData.$route(
-          path: 'album/:id',
-          factory: _$AlbumRoute._fromState,
-        ),
-        GoRouteData.$route(
-          path: 'playlist/:id',
-          factory: _$PlaylistRoute._fromState,
-        ),
-        GoRouteData.$route(
-          path: 'search',
-          factory: _$SearchScreenRoute._fromState,
+          path: '/',
+          factory: _$HomeScreenRoute._fromState,
+          routes: [
+            GoRouteData.$route(
+              path: 'album/:id',
+              factory: _$AlbumRoute._fromState,
+            ),
+            GoRouteData.$route(
+              path: 'playlist/:id',
+              factory: _$PlaylistRoute._fromState,
+            ),
+            GoRouteData.$route(
+              path: 'search',
+              factory: _$SearchScreenRoute._fromState,
+            ),
+          ],
         ),
       ],
     );
+
+extension $FlaavnShellRouteDataExtension on FlaavnShellRouteData {
+  static FlaavnShellRouteData _fromState(GoRouterState state) =>
+      const FlaavnShellRouteData();
+}
 
 mixin _$HomeScreenRoute on GoRouteData {
   static HomeScreenRoute _fromState(GoRouterState state) =>
