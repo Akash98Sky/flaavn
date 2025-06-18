@@ -40,24 +40,11 @@ graph TD
     A --- K
 ```
 
-## Screenshots
+## Design
 
 Here are some screenshots showcasing the application's design:
 
-### Home Screen
-![Home Screen](design/home.png)
-
-### Album View
-![Album View](design/album.png)
-
-### Artist View
-![Artist View](design/artist.png)
-
-### Player
-![Player](design/player.png)
-
-### Search
-![Search](design/search.png)
+<img src="design/home.png" alt="Home Screen" width="200"> <img src="design/album.png" alt="Album View" width="200"> <img src="design/artist.png" alt="Artist View" width="200"> <img src="design/player.png" alt="Player" width="200"> <img src="design/search.png" alt="Search" width="200">
 
 ## Application Flow
 
