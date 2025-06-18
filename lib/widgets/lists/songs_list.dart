@@ -1,5 +1,5 @@
 import 'package:flaavn/models/song.dart';
-import 'package:flaavn/providers/player.dart';
+import 'package:flaavn/providers/player_controller.dart';
 import 'package:flaavn/widgets/image_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

@@ -9,6 +9,12 @@ class ImageUrl {
   /// 500 x 500
   String get high => _url.replaceFirst('150x150', '500x500');
 
+  factory ImageUrl.fromJson(List<Map<String, dynamic>> list) {
+    final json =
+        list.firstWhere((img) => (img['quality'] as String).startsWith('150'));
+    return ImageUrl(json['url'] as String);
+  }
+
   @override
   String toString() => _url;
 }

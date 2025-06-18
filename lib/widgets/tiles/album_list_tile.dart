@@ -16,8 +16,15 @@ class AlbumListTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(4), // Square corners
       ),
       title: Text(album.title),
-      subtitle:
-          Text('Album · ${album.subtitle ?? ''}'), // Adjust subtitle format
+      subtitle: Text(
+        'Album · ${album.subtitle ?? ''}',
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Theme.of(context)
+                  .colorScheme
+                  .onSurface
+                  .withValues(alpha: 0.7),
+            ),
+      ), // Adjust subtitle format
       trailing: const Icon(Icons.arrow_forward_ios),
       onTap: () => goToAlbum(
         context,

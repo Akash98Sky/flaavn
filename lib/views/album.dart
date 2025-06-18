@@ -7,7 +7,9 @@ import '../../widgets/image_display.dart';
 import '../models/album.dart';
 import '../models/song.dart';
 import '../providers/flaavn_api.dart';
+import '../providers/player_controller.dart';
 import '../widgets/lists/songs_list.dart';
+import '../widgets/media_actions.dart';
 
 final _albumProvider =
     FutureProvider.family<AlbumDetails, AlbumScreenArguments>((ref, args) {
@@ -60,13 +62,13 @@ class AlbumScreen extends ConsumerWidget {
   }
 }
 
-class AlbumView extends StatelessWidget {
+class AlbumView extends ConsumerWidget {
   final AlbumDetails album;
 
   const AlbumView({super.key, required this.album});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return CustomScrollView(
       slivers: [
         SliverAppBar(
@@ -103,35 +105,9 @@ class AlbumView extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
                 const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.download),
-                      onPressed: () {
-                        // Handle download
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.shuffle),
-                      onPressed: () {
-                        // Handle shuffle
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.favorite_border),
-                      onPressed: () {
-                        // Handle favorite
-                      },
-                    ),
-                    const SizedBox(width: 32),
-                    FloatingActionButton(
-                      onPressed: () {
-                        // Handle play
-                      },
-                      child: const Icon(Icons.play_arrow),
-                    ),
-                  ],
+                MediaActions(
+                  onPlay: () =>
+                      ref.read(playerControllerProvider).setQueue(album.list),
                 ),
               ],
             ),
@@ -143,13 +119,13 @@ class AlbumView extends StatelessWidget {
   }
 }
 
-class SongView extends StatelessWidget {
+class SongView extends ConsumerWidget {
   final SongDetails song;
 
   const SongView({super.key, required this.song});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return CustomScrollView(
       slivers: [
         SliverAppBar(
@@ -182,39 +158,13 @@ class SongView extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 Text(
-                  'Album • ${song.year}',
+                  'Song • ${song.year}',
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
                 const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.download),
-                      onPressed: () {
-                        // Handle download
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.shuffle),
-                      onPressed: () {
-                        // Handle shuffle
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.favorite_border),
-                      onPressed: () {
-                        // Handle favorite
-                      },
-                    ),
-                    const SizedBox(width: 32),
-                    FloatingActionButton(
-                      onPressed: () {
-                        // Handle play
-                      },
-                      child: const Icon(Icons.play_arrow),
-                    ),
-                  ],
+                MediaActions(
+                  onPlay: () =>
+                      ref.read(playerControllerProvider).setQueue([song]),
                 ),
               ],
             ),

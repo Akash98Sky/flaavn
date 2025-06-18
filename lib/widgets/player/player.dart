@@ -1,43 +1,55 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 
-import '../models/song.dart';
-import '../widgets/image_display.dart';
-import 'controller.dart';
+import '../../models/song.dart';
+import '../image_display.dart';
+import '../../player/controller.dart';
 
-class FlaavnPlayer extends StatefulWidget {
-  final FlaavnPlayerController controller;
+class Player extends StatefulWidget {
+  final PlayerController controller;
   final bool miniPlayer;
 
-  const FlaavnPlayer({
+  const Player({
     super.key,
     required this.controller,
     this.miniPlayer = false,
   });
 
   @override
-  State<FlaavnPlayer> createState() => _FlaavnPlayerState();
+  State<Player> createState() => _PlayerState();
 }
 
-class _FlaavnPlayerState extends State<FlaavnPlayer> {
+class _PlayerState extends State<Player> {
   SongDetails? _currentSong;
+  late Duration _currentDuration;
+  late Duration _currentPosition;
   final _subscriptions = <StreamSubscription>[];
 
   @override
   void initState() {
     widget.controller.init();
     _currentSong = widget.controller.currentMedia;
+    _currentDuration = Duration.zero;
+    _currentPosition = Duration.zero;
+
     _subscriptions.addAll([
       widget.controller.onMediaChanged.listen((song) {
-        debugPrint('Media changed: $song');
+        log('Media changed: $song');
         setState(() {
           _currentSong = song;
         });
       }),
+      widget.controller.onDurationChanged.listen((duration) {
+        log('Duration changed: $duration');
+        setState(() {
+          _currentDuration = duration;
+        });
+      })
     ]);
     super.initState();
   }
@@ -59,15 +71,11 @@ class _FlaavnPlayerState extends State<FlaavnPlayer> {
 
     if (!widget.miniPlayer) {
       return Column(
-        // crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 300),
-              child: Hero(
-                tag: _currentSong!.id,
-                child: ImageDisplay(_currentSong!.image!.high),
-              ),
+            child: Hero(
+              tag: _currentSong!.id,
+              child: ImageDisplay(_currentSong!.image!.high),
             ),
           ),
           Padding(
@@ -90,19 +98,18 @@ class _FlaavnPlayerState extends State<FlaavnPlayer> {
                     ),
                   ),
                 StreamBuilder<Duration>(
-                  stream: widget.controller.onDurationChanged,
-                  initialData: Duration.zero,
-                  builder: (_, totalDurationSnap) => StreamBuilder<Duration>(
-                    stream: widget.controller.onPositionChanged,
-                    initialData: Duration.zero,
-                    builder: (context, snapshot) {
-                      return ProgressBar(
-                        progress: snapshot.data!,
-                        total: totalDurationSnap.data!,
-                        onSeek: (duration) => widget.controller.seek(duration),
-                      );
-                    },
-                  ),
+                  stream: widget.controller.onPositionChanged,
+                  initialData: _currentPosition,
+                  builder: (context, snapshot) {
+                    // Update the current position when the stream emits a new value
+                    // This is necessary to keep track of the current position
+                    _currentPosition = snapshot.data ?? Duration.zero;
+                    return ProgressBar(
+                      progress: snapshot.data!,
+                      total: _currentDuration,
+                      onSeek: (duration) => widget.controller.seek(duration),
+                    );
+                  },
                 ),
                 SafeArea(
                   child: StreamBuilder<PlayerState>(

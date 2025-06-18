@@ -1,50 +1,45 @@
 import 'package:flutter/material.dart';
 
 class FlaavnAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const FlaavnAppBar({super.key});
+  const FlaavnAppBar({
+    super.key,
+    this.leading,
+    this.title,
+    this.actions,
+    this.bottom,
+  });
+
+  final Widget? leading;
+  final Widget? title;
+  final List<Widget>? actions;
+  final PreferredSizeWidget? bottom;
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                const CircleAvatar(
-                  // Placeholder for user profile image
-                  backgroundImage:
-                      NetworkImage('https://via.placeholder.com/150'),
-                  radius: 20,
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  'Flaavn',
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
-                ),
-              ],
-            ),
-            InkWell(
-              onTap: () {
-                // Handle settings tap
-              },
-              child: Icon(
-                Icons.settings,
-                size: 25,
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
-            ),
-          ],
-        ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              if (leading != null) leading!,
+              if (title != null) Expanded(child: title!),
+              if (actions != null) ...actions!,
+            ],
+          ),
+          if (bottom != null) bottom!,
+        ],
       ),
     );
   }
 
   @override
-  Size get preferredSize => const Size(double.infinity, 80); // Adjusted height
+  Size get preferredSize {
+    double height = kToolbarHeight;
+    if (bottom != null) {
+      height += bottom!.preferredSize.height;
+    }
+    return Size.fromHeight(height);
+  }
 }

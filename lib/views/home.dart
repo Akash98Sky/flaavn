@@ -28,7 +28,19 @@ class HomeScreen extends ConsumerWidget {
     final state = ref.watch(_discoverProvider); // Use the provider
 
     return Scaffold(
-      appBar: const FlaavnAppBar(),
+      appBar: FlaavnAppBar(
+        title: Text(
+          'Hey there',
+          style: Theme.of(context).textTheme.displaySmall,
+        ),
+        leading: const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: CircleAvatar(
+            backgroundImage:
+                AssetImage('design/artist.png'), // Placeholder for user avatar
+          ),
+        ),
+      ),
       body: state.when(
         data: (data) {
           return ListView(

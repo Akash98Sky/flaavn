@@ -44,7 +44,7 @@ graph TD
 
 Here are some screenshots showcasing the application's design:
 
-<img src="design/home.png" alt="Home Screen" width="200"> <img src="design/album.png" alt="Album View" width="200"> <img src="design/artist.png" alt="Artist View" width="200"> <img src="design/player.png" alt="Player" width="200"> <img src="design/search.png" alt="Search" width="200">
+<img src="design/home.png" alt="Home Screen" width="200"> <img src="design/album.png" alt="Album View" width="200"> <img src="design/player.png" alt="Player" width="200"> <img src="design/search.png" alt="Search" width="200">
 
 ## Application Flow
 

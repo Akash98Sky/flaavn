@@ -3,10 +3,11 @@ import 'package:go_router/go_router.dart';
 
 import 'views/album.dart';
 import 'views/home.dart';
+import 'views/library.dart';
 import 'views/playlist.dart';
 import 'views/search.dart';
 import 'widgets/flaavn_navigation_bar.dart';
-import 'widgets/playbar.dart';
+import 'widgets/player/playbar.dart';
 
 part 'routes.g.dart';
 
@@ -27,6 +28,7 @@ void goToPlaylist(BuildContext ctx, String id) =>
         TypedGoRoute<AlbumRoute>(path: 'album/:id'),
         TypedGoRoute<PlaylistRoute>(path: 'playlist/:id'),
         TypedGoRoute<SearchScreenRoute>(path: 'search'),
+        TypedGoRoute<LibraryScreenRoute>(path: 'library')
       ],
     ),
   ],
@@ -40,13 +42,14 @@ class FlaavnShellRouteData extends ShellRouteData {
     GoRouterState state,
     Widget navigator,
   ) {
+    final navBarKey = GlobalKey();
     return Scaffold(
       body: navigator,
-      bottomNavigationBar: const Column(
+      bottomNavigationBar: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          FlaavnPlayBar(),
-          FlaavnNavigationBar(),
+          PlayBar(navBarKey: navBarKey),
+          FlaavnNavigationBar(key: navBarKey),
         ],
       ),
     );
@@ -98,4 +101,13 @@ class SearchScreenRoute extends GoRouteData with _$SearchScreenRoute {
   @override
   Widget build(BuildContext context, GoRouterState state) =>
       SearchScreen(query: query);
+}
+
+class LibraryScreenRoute extends GoRouteData with _$LibraryScreenRoute {
+  const LibraryScreenRoute();
+
+  static final GlobalKey<NavigatorState> $navigatorKey = shellNavigatorKey;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) => LibraryScreen();
 }

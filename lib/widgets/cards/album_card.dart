@@ -48,13 +48,14 @@ class NewAlbumCard extends ConsumerWidget {
                 padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                 child: Text(
                   album.subtitle ?? '',
-                  style: const TextStyle(
-                    fontFamily: 'Outfit',
-                    fontSize: 12,
-                    fontWeight: FontWeight.normal,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withValues(alpha: 0.7),
+                      ),
                   maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],

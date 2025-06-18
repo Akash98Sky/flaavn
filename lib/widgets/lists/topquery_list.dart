@@ -7,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../models/chart.dart';
 import '../../models/song.dart';
 import '../../providers/flaavn_api.dart';
-import '../../providers/player.dart';
+import '../../providers/player_controller.dart';
 import '../../routes.dart';
 import '../tiles/circular_tile.dart';
 

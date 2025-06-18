@@ -29,6 +29,10 @@ RouteBase get $flaavnShellRouteData => ShellRouteData.$route(
               path: 'search',
               factory: _$SearchScreenRoute._fromState,
             ),
+            GoRouteData.$route(
+              path: 'library',
+              factory: _$LibraryScreenRoute._fromState,
+            ),
           ],
         ),
       ],
@@ -133,6 +137,29 @@ mixin _$SearchScreenRoute on GoRouteData {
         queryParams: {
           if (_self.query != null) 'query': _self.query,
         },
+      );
+
+  @override
+  void go(BuildContext context) => context.go(location);
+
+  @override
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  @override
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  @override
+  void replace(BuildContext context) => context.replace(location);
+}
+
+mixin _$LibraryScreenRoute on GoRouteData {
+  static LibraryScreenRoute _fromState(GoRouterState state) =>
+      const LibraryScreenRoute();
+
+  @override
+  String get location => GoRouteData.$location(
+        '/library',
       );
 
   @override

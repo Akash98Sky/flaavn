@@ -5,6 +5,8 @@ import 'package:flaavn/models/launch_data.dart';
 import '../constants/strings.dart';
 import '../generated/swagger/saavnapi.enums.swagger.dart' as enums;
 import '../models/album.dart';
+import '../models/artist.dart';
+import '../models/paginated.dart';
 import '../models/search_result.dart';
 import '../models/playlist.dart';
 import '../models/song.dart';
@@ -24,13 +26,7 @@ class FlaavnApiService {
       headers: {
         'User-Agent': apiUserAgent,
       },
-    ).then((response) {
-      if (response.isSuccessful) {
-        return LaunchData.fromJson(response.bodyOrThrow['data']);
-      } else {
-        throw Exception('Failed to load launch data');
-      }
-    });
+    ).then((response) => LaunchData.fromJson(response.bodyOrThrow['data']));
   }
 
   Future<SearchResult> apiSearchGet({required String? query}) async {
@@ -38,13 +34,22 @@ class FlaavnApiService {
         SearchResult.fromApiSearchGetResponse(response.bodyOrThrow.data));
   }
 
-  Future<Response<ApiSearchSongsGet$Response>> apiSearchSongsGet({
+  Future<Paginated<Song>> apiSearchSongsGet({
     required String? query,
     int? page,
     int? limit,
   }) async {
-    return await _saavnapi.apiSearchSongsGet(
-        query: query, page: page, limit: limit);
+    return await _saavnapi
+        .apiSearchSongsGet(query: query, page: page, limit: limit)
+        .then((response) => Paginated(
+              page: page ?? 1,
+              limit: limit ?? 10,
+              items: response.bodyOrThrow.data.results
+                  .map((song) => Song.fromApiSearchGetResponse(
+                      ApiSearchGet$Response$Data$Songs$Results$Item.fromJson(
+                          song.toJson())))
+                  .toList(),
+            ));
   }
 
   Future<Response<ApiSearchAlbumsGet$Response>> apiSearchAlbumsGet({
@@ -74,13 +79,6 @@ class FlaavnApiService {
         query: query, page: page, limit: limit);
   }
 
-  Future<Response<ApiSongsGet$Response>> apiSongsGet({
-    String? ids,
-    String? link,
-  }) async {
-    return await _saavnapi.apiSongsGet(ids: ids, link: link);
-  }
-
   Future<SongDetails> apiSongsIdGet({required String? id}) async {
     return await _saavnapi.apiSongsIdGet(id: id).then((response) =>
         SongDetails.fromApiSongsIdGetResponse(response.bodyOrThrow.data.first));
@@ -101,26 +99,7 @@ class FlaavnApiService {
         AlbumDetails.fromApiAlbumsGetResponse(response.bodyOrThrow.data));
   }
 
-  Future<Response<ApiArtistsGet$Response>> apiArtistsGet({
-    String? id,
-    String? link,
-    num? page,
-    num? songCount,
-    num? albumCount,
-    String? sortBy,
-    String? sortOrder,
-  }) async {
-    return await _saavnapi.apiArtistsGet(
-        id: id,
-        link: link,
-        page: page,
-        songCount: songCount,
-        albumCount: albumCount,
-        sortBy: sortBy,
-        sortOrder: sortOrder);
-  }
-
-  Future<Response<ApiArtistsIdGet$Response>> apiArtistsIdGet({
+  Future<ArtistDetails> apiArtistsIdGet({
     required String? id,
     int? page,
     int? songCount,
@@ -128,13 +107,16 @@ class FlaavnApiService {
     enums.ApiArtistsIdGetSortBy? sortBy,
     enums.ApiArtistsIdGetSortOrder? sortOrder,
   }) async {
-    return await _saavnapi.apiArtistsIdGet(
-        id: id,
-        page: page,
-        songCount: songCount,
-        albumCount: albumCount,
-        sortBy: sortBy,
-        sortOrder: sortOrder);
+    return await _saavnapi
+        .apiArtistsIdGet(
+            id: id,
+            page: page,
+            songCount: songCount,
+            albumCount: albumCount,
+            sortBy: sortBy,
+            sortOrder: sortOrder)
+        .then((response) => ArtistDetails.fromApiArtistsIdGetResponse(
+            response.bodyOrThrow.data));
   }
 
   Future<Response<ApiArtistsIdSongsGet$Response>> apiArtistsIdSongsGet({

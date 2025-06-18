@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 
 import '../models/song.dart';
 
-class FlaavnPlayerController {
+class PlayerController {
   final _player = AudioPlayer();
   final _queue = <SongDetails>[];
   final _mediaStream = StreamController<SongDetails>.broadcast();
