@@ -54,9 +54,9 @@ class FlaavnNavigationBar extends StatelessWidget {
       ],
       currentIndex: _calculateSelectedIndex(context),
       onTap: (int idx) => _onItemTapped(idx, context),
-      backgroundColor: Theme.of(context).primaryColor,
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
       selectedItemColor: Theme.of(context).colorScheme.secondary,
-      unselectedItemColor: Theme.of(context).textTheme.bodySmall?.color,
+      unselectedItemColor: Theme.of(context).unselectedWidgetColor,
     );
   }
 }
