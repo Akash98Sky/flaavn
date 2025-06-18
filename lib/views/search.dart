@@ -1,22 +1,22 @@
-import 'package:flaavn/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../models/autocomplete_result.dart';
-import '../services/cloud_funcs.dart';
+import '../models/search_result.dart';
+import '../providers/flaavn_api.dart';
+import '../routes.dart' show SearchScreenRoute;
 import '../widgets/appbar/flaavn_searchbar.dart';
 import '../widgets/lists/album_list.dart';
 import '../models/album.dart'; // For AlbumDetails
 import '../widgets/tiles/album_list_tile.dart'; // For AlbumListTile
 
 final _searchProvider =
-    FutureProvider.family<AutocompleteResult, String?>((ref, query) {
-  final cloudFuncs = ServerlessFuncs();
-  if (query != null) {
-    return cloudFuncs.getSearchAutocomplete(query);
+    FutureProvider.family<SearchResult, String?>((ref, query) {
+  if (query == null || query.isEmpty) {
+    return Future.value(SearchResult.empty());
   }
-  return AutocompleteResult();
+  final apiProvider = ref.watch(flaavnApiProvider);
+  return apiProvider.apiSearchGet(query: query);
 });
 
 class SearchScreen extends ConsumerWidget {
@@ -31,7 +31,7 @@ class SearchScreen extends ConsumerWidget {
     return Scaffold(
       appBar: FlaavnSearchBar(
         onSearch: (query) =>
-            context.go(SearchScreenRoute(query: query).location),
+            context.replace(SearchScreenRoute(query: query).location),
       ),
       body: state.when(
         data: (data) {
@@ -93,14 +93,14 @@ class SearchScreen extends ConsumerWidget {
               const SizedBox(height: 16),
 
               // Top Result (Artist)
-              if (data.artists.data.isNotEmpty) ...[
+              if (data.artists.results.isNotEmpty) ...[
                 ListTile(
                   leading: CircleAvatar(
                     backgroundImage:
-                        NetworkImage(data.artists.data.first.image?.high ?? ''),
+                        NetworkImage(data.artists.results.first.image.high),
                     radius: 30,
                   ),
-                  title: Text(data.artists.data.first.name ?? ''),
+                  title: Text(data.artists.results.first.name),
                   subtitle: const Text('Artist'),
                   trailing: const Icon(Icons.arrow_forward_ios),
                   onTap: () {
@@ -111,17 +111,17 @@ class SearchScreen extends ConsumerWidget {
               ],
 
               // Featuring Artist Section
-              if (data.artists.data.isNotEmpty) ...[
+              if (data.artists.results.isNotEmpty) ...[
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    'Featuring ${data.artists.data.first.name ?? 'Artist'}',
+                    'Featuring ${data.artists.results.first.name}',
                     style: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
                 NewAlbumList(
-                  albums: data.albums.data
+                  albums: data.albums.results
                       .map(
                         (album) => AlbumDetails(
                           id: album.id,
@@ -137,11 +137,11 @@ class SearchScreen extends ConsumerWidget {
               ],
 
               // This is Artist Section (Albums/Songs)
-              if (data.albums.data.isNotEmpty) ...[
+              if (data.albums.results.isNotEmpty) ...[
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    'This is ${data.artists.data.isNotEmpty ? data.artists.data.first.name ?? 'Artist' : 'Artist'}',
+                    'This is ${data.artists.results.isNotEmpty ? data.artists.results.first.name : 'Artist'}',
                     style: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.bold),
                   ),
@@ -150,9 +150,9 @@ class SearchScreen extends ConsumerWidget {
                   shrinkWrap: true, // Important for nested ListViews
                   physics:
                       const NeverScrollableScrollPhysics(), // Disable scrolling for nested ListView
-                  itemCount: data.albums.data.length,
+                  itemCount: data.albums.results.length,
                   itemBuilder: (context, index) {
-                    final album = data.albums.data[index];
+                    final album = data.albums.results[index];
                     return AlbumListTile(
                         album: AlbumDetails(
                       id: album.id,
@@ -167,18 +167,18 @@ class SearchScreen extends ConsumerWidget {
               ],
 
               // Drake Radio Section (Placeholder for now, assuming it's another horizontal list)
-              if (data.artists.data.isNotEmpty) ...[
+              if (data.artists.results.isNotEmpty) ...[
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    '${data.artists.data.first.name ?? 'Artist'} Radio',
+                    '${data.artists.results.first.name} Radio',
                     style: const TextStyle(
                         fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
                 // Placeholder for Drake Radio - could be another NewAlbumList or a custom widget
                 NewAlbumList(
-                  albums: data.albums.data
+                  albums: data.albums.results
                       .map(
                         (album) => AlbumDetails(
                           id: album.id,
@@ -193,10 +193,11 @@ class SearchScreen extends ConsumerWidget {
                 const SizedBox(height: 16),
               ],
 
-              if (data.topquery.data.isEmpty &&
-                  data.songs.data.isEmpty &&
-                  data.albums.data.isEmpty &&
-                  data.artists.data.isEmpty)
+              if (data.topquery.results.isEmpty &&
+                  data.songs.results.isEmpty &&
+                  data.albums.results.isEmpty &&
+                  data.artists.results.isEmpty &&
+                  data.playlists.results.isEmpty)
                 const Center(child: Text('No results found')),
             ],
           );

@@ -59,12 +59,15 @@ class _FlaavnPlayerState extends State<FlaavnPlayer> {
 
     if (!widget.miniPlayer) {
       return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        // crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(
-            child: Hero(
-              tag: _currentSong!.id,
-              child: ImageDisplay(_currentSong!.image!.high),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 300),
+              child: Hero(
+                tag: _currentSong!.id,
+                child: ImageDisplay(_currentSong!.image!.high),
+              ),
             ),
           ),
           Padding(

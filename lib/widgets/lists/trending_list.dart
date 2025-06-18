@@ -1,8 +1,9 @@
+import 'package:flaavn/routes.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/trending.dart';
-import '../cards/trending_card.dart';
+import '../tiles/circular_tile.dart';
 
 class TrendingList extends StatelessWidget {
   final List<NewTrending> trendings;
@@ -25,8 +26,23 @@ class TrendingList extends StatelessWidget {
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: trendings.length,
-          itemBuilder: (context, index) =>
-              TrendingCard(trending: trendings[index]),
+          itemBuilder: (context, index) => Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            child: SizedBox(
+              width: 160,
+              child: CircularTile(
+                title: trendings[index].title,
+                subtitle: trendings[index].subtitle,
+                image: trendings[index].image,
+                onTap: () => goToAlbum(
+                  context,
+                  trendings[index].id,
+                  trendings[index].permaUrl,
+                  trendings[index].type.name,
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );

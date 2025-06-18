@@ -1,15 +1,16 @@
-import 'package:flaavn/services/cloud_funcs.dart';
-import 'package:flaavn/widgets/lists/songs_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-import '../../widgets/appbar/flaavn_appbar.dart';
-import 'package:flaavn/models/playlist.dart';
+import '../models/playlist.dart';
+import '../providers/flaavn_api.dart';
+import '../widgets/image_display.dart';
+import '../widgets/lists/songs_list.dart';
 
 final _playlistProvider =
     FutureProvider.family<PlaylistDetails, String>((ref, id) {
-  final cloudFuncs = ServerlessFuncs();
-  return cloudFuncs.getPlaylist(id);
+  final apiProvider = ref.watch(flaavnApiProvider);
+  return apiProvider.apiPlaylistsGet(id: id);
 });
 
 class PlaylistScreen extends ConsumerWidget {
@@ -22,9 +23,80 @@ class PlaylistScreen extends ConsumerWidget {
     final state = ref.watch(_playlistProvider(playlistId));
 
     return Scaffold(
-      appBar: const FlaavnAppBar(),
       body: state.when(
-        data: (data) => SongsList(songs: data.list),
+        data: (data) => CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => context.pop(),
+              ),
+              expandedHeight: 350.0,
+              flexibleSpace: FlexibleSpaceBar(
+                background: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 150,
+                      height: 150,
+                      child: data.image != null
+                          ? ImageDisplay(
+                              data.image!.high,
+                              borderRadius: BorderRadius.circular(10),
+                            )
+                          : Container(),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      data.title,
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                    Text(
+                      data.subtitle,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    Text(
+                      'Album • ${data.year}',
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.download),
+                          onPressed: () {
+                            // Handle download
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.shuffle),
+                          onPressed: () {
+                            // Handle shuffle
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.favorite_border),
+                          onPressed: () {
+                            // Handle favorite
+                          },
+                        ),
+                        const SizedBox(width: 32),
+                        FloatingActionButton(
+                          onPressed: () {
+                            // Handle play
+                          },
+                          child: const Icon(Icons.play_arrow),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SongsList(songs: data.list),
+          ],
+        ),
         error: (err, st) => Text('$err'),
         loading: () => const Center(child: CircularProgressIndicator()),
       ),

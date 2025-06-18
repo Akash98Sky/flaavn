@@ -25,7 +25,10 @@ class NewAlbumList extends StatelessWidget {
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: albums.length,
-          itemBuilder: (context, index) => NewAlbumCard(album: albums[index]),
+          itemBuilder: (context, index) => SizedBox(
+            width: 170,
+            child: NewAlbumCard(album: albums[index]),
+          ),
         ),
       ),
     );

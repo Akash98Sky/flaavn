@@ -1,3 +1,5 @@
+import 'package:flaavn/generated/swagger/saavnapi.models.swagger.dart';
+
 import 'json_model.dart';
 
 class Chart extends JsonModel {
@@ -8,9 +10,8 @@ class Chart extends JsonModel {
     required this.type,
     required this.image,
     required this.permaUrl,
-    required this.moreInfo,
-    required this.explicitContent,
-    required this.miniObj,
+    required this.language,
+    this.explicitContent,
   });
 
   final String id;
@@ -19,9 +20,8 @@ class Chart extends JsonModel {
   final String type;
   final String image;
   final String permaUrl;
-  final ChartMoreInfo? moreInfo;
   final String? explicitContent;
-  final bool? miniObj;
+  final String language;
 
   factory Chart.fromJson(Map<String, dynamic> json) => Chart(
         id: json['id'],
@@ -30,11 +30,8 @@ class Chart extends JsonModel {
         type: json['type'],
         image: json['image'],
         permaUrl: json['perma_url'],
-        moreInfo: json['more_info'] == null
-            ? null
-            : ChartMoreInfo.fromJson(json['more_info']),
         explicitContent: json['explicit_content'],
-        miniObj: json['mini_obj'],
+        language: json['language'] ?? '',
       );
 
   @override
@@ -45,24 +42,18 @@ class Chart extends JsonModel {
         'type': type,
         'image': image,
         'perma_url': permaUrl,
-        'more_info': moreInfo?.toJson(),
         'explicit_content': explicitContent,
-        'mini_obj': miniObj,
       };
-}
 
-class ChartMoreInfo {
-  ChartMoreInfo({
-    required this.firstname,
-  });
-
-  final String? firstname;
-
-  factory ChartMoreInfo.fromJson(Map<String, dynamic> json) => ChartMoreInfo(
-        firstname: json['firstname'],
+  factory Chart.fromApiSearchGetResponse(
+          ApiSearchGet$Response$Data$TopQuery$Results$Item e) =>
+      Chart(
+        id: e.id,
+        title: e.title,
+        subtitle: e.description,
+        type: e.type,
+        image: e.image.last.url,
+        permaUrl: e.url,
+        language: e.language,
       );
-
-  Map<String, dynamic> toJson() => {
-        'firstname': firstname,
-      };
 }

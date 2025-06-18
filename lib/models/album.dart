@@ -1,3 +1,5 @@
+import '../extentions/string_extentions.dart';
+import '../generated/swagger/saavnapi.models.swagger.dart';
 import '../helpers/types.dart';
 import 'artists_map.dart';
 import 'json_model.dart';
@@ -10,7 +12,7 @@ class Album extends JsonModel {
     this.subtitle,
     this.type,
     this.image,
-    this.permaUrl,
+    required this.permaUrl,
     this.moreInfo = const AlbumInfo(),
     this.explicitContent,
     this.miniObj,
@@ -22,7 +24,7 @@ class Album extends JsonModel {
   final String? subtitle;
   final String? type;
   final ImageUrl? image;
-  final String? permaUrl;
+  final String permaUrl;
   final AlbumInfo moreInfo;
   final String? explicitContent;
   final bool? miniObj;
@@ -54,6 +56,22 @@ class Album extends JsonModel {
         'mini_obj': miniObj,
         'description': description,
       };
+
+  factory Album.fromApiSearchGetResponse(
+          ApiSearchGet$Response$Data$Albums$Results$Item e) =>
+      Album(
+        id: e.id,
+        title: e.title.cleanHtml,
+        subtitle: e.description.cleanHtml,
+        type: e.type,
+        image: e.image.isNotEmpty ? ImageUrl(e.image.first.url) : null,
+        permaUrl: e.url,
+        moreInfo: AlbumInfo(
+          year: e.year,
+          language: e.language,
+          songPids: e.songIds,
+        ),
+      );
 }
 
 class AlbumInfo {
@@ -99,7 +117,7 @@ class AlbumDetails {
     this.subtitle,
     this.headerDesc,
     this.type,
-    this.permaUrl,
+    required this.permaUrl,
     this.image,
     this.language,
     this.year,
@@ -116,7 +134,7 @@ class AlbumDetails {
   final String? subtitle;
   final String? headerDesc;
   final String? type;
-  final String? permaUrl;
+  final String permaUrl;
   final ImageUrl? image;
   final String? language;
   final String? year;
@@ -167,6 +185,28 @@ class AlbumDetails {
         'list': List<dynamic>.from(list.map((x) => x.toJson())),
         'more_info': moreInfo.toJson(),
       };
+
+  factory AlbumDetails.fromApiAlbumsGetResponse(
+          ApiAlbumsGet$Response$Data data) =>
+      AlbumDetails(
+        id: data.id,
+        title: data.name.cleanHtml,
+        subtitle: data.description.cleanHtml,
+        headerDesc: data.description.cleanHtml,
+        type: data.type,
+        permaUrl: data.url,
+        image: data.image.isNotEmpty ? ImageUrl(data.image.first.url) : null,
+        language: data.language,
+        year: data.year?.toString(),
+        playCount: data.playCount?.toString(),
+        explicitContent: data.explicitContent.toString(),
+        listCount: data.songCount?.toString(),
+        listType: data.type,
+        list: data.songs
+            .map((song) => SongDetails.fromApiAlbumsGetResponse(song))
+            .toList(growable: false),
+        moreInfo: AlbumDetailsInfo(),
+      );
 }
 
 class AlbumDetailsInfo {

@@ -54,3 +54,6 @@ app.*.map.json
 # Environment variables
 .env
 /lib/env/env.g.dart
+
+# Swagger files
+/docs/swaggers/*.json

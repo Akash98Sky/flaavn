@@ -13,8 +13,8 @@ part 'routes.g.dart';
 final GlobalKey<NavigatorState> shellNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 
-void goToAlbum(BuildContext ctx, String id) =>
-    ctx.go(AlbumRoute(id: id).location);
+void goToAlbum(BuildContext ctx, String id, String link, String type) =>
+    ctx.go(AlbumRoute(id: id, link: link, type: type).location);
 
 void goToPlaylist(BuildContext ctx, String id) =>
     ctx.go(PlaylistRoute(id: id).location);
@@ -64,14 +64,16 @@ class HomeScreenRoute extends GoRouteData with _$HomeScreenRoute {
 
 class AlbumRoute extends GoRouteData with _$AlbumRoute {
   final String id;
+  final String link;
+  final String type;
 
-  const AlbumRoute({required this.id});
+  const AlbumRoute({required this.id, required this.link, required this.type});
 
   static final GlobalKey<NavigatorState> $navigatorKey = shellNavigatorKey;
 
   @override
-  Widget build(BuildContext context, GoRouterState state) =>
-      AlbumScreen(albumId: id);
+  Widget build(BuildContext context, GoRouterState state) => AlbumScreen(
+      arguments: AlbumScreenArguments(id: id, link: link, type: type));
 }
 
 class PlaylistRoute extends GoRouteData with _$PlaylistRoute {

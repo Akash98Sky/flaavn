@@ -1,6 +1,9 @@
+import 'package:flaavn/extentions/string_extentions.dart';
+
 import '../helpers/types.dart';
 import 'artists_map.dart';
 import 'json_model.dart';
+import 'package:flaavn/generated/swagger/saavnapi.swagger.dart';
 
 class Song extends JsonModel {
   Song({
@@ -53,6 +56,22 @@ class Song extends JsonModel {
         'mini_obj': miniObj,
         'description': description,
       };
+
+  factory Song.fromApiSearchGetResponse(
+          ApiSearchGet$Response$Data$Songs$Results$Item e) =>
+      Song(
+        id: e.id,
+        title: e.title.cleanHtml,
+        subtitle: e.description.cleanHtml,
+        type: e.type,
+        image: e.image.isNotEmpty ? ImageUrl(e.image.last.url) : null,
+        permaUrl: e.url,
+        moreInfo: SongInfo(
+          album: e.album,
+          primaryArtists: e.primaryArtists,
+          singers: e.singers,
+        ),
+      );
 }
 
 class SongInfo {
@@ -177,6 +196,146 @@ class SongDetails {
         'list': list,
         'more_info': moreInfo.toJson(),
       };
+
+  factory SongDetails.fromApiAlbumsGetResponse(
+      ApiAlbumsGet$Response$Data$Songs$Item song) {
+    final imageUrl = song.image.isNotEmpty ? song.image.last.url : null;
+    final downloadUrl320Kbps = song.downloadUrl.firstWhere(
+      (e) => e.quality == '320kbps',
+      orElse: () => song.downloadUrl.last,
+    );
+    final mediaUrl =
+        song.downloadUrl.isNotEmpty ? song.downloadUrl.last.url : null;
+
+    return SongDetails(
+      id: song.id,
+      title: song.name.cleanHtml,
+      subtitle: song.artists.primary.map((e) => e.name).join(', '),
+      headerDesc: null,
+      type: song.type,
+      permaUrl: song.url,
+      image: imageUrl == null ? null : ImageUrl(imageUrl),
+      language: song.language,
+      year: song.year,
+      playCount: song.playCount?.toString(),
+      explicitContent: song.explicitContent.toString(),
+      listCount: null,
+      listType: null,
+      list: null,
+      moreInfo: SongDetailsInfo(
+        music: null,
+        albumId: song.album.id,
+        album: song.album.name,
+        label: song.label,
+        origin: null,
+        isDolbyContent: null,
+        the320Kbps: downloadUrl320Kbps.url,
+        mediaUrl: mediaUrl == null ? null : MediaUrl(mediaUrl),
+        albumUrl: song.album.url,
+        duration: song.duration?.toString(),
+        cacheState: null,
+        hasLyrics: song.hasLyrics.toString(),
+        lyricsSnippet: null,
+        starred: null,
+        copyrightText: song.copyright,
+        artistMap: ArtistMap.fromJson(song.artists.toJson()),
+        releaseDate: song.releaseDate,
+        labelUrl: null,
+        vcode: null,
+        vlink: null,
+        trillerAvailable: null,
+        lyricsId: song.lyricsId,
+      ),
+    );
+  }
+
+  factory SongDetails.fromApiPlaylistsGetResponse(
+      ApiPlaylistsGet$Response$Data$Songs$Item song) {
+    final imageUrl = song.image.isNotEmpty ? song.image.last.url : null;
+    final downloadUrl320Kbps = song.downloadUrl.firstWhere(
+      (e) => e.quality == '320kbps',
+      orElse: () => song.downloadUrl.last,
+    );
+    final mediaUrl =
+        song.downloadUrl.isNotEmpty ? song.downloadUrl.last.url : null;
+
+    return SongDetails(
+      id: song.id,
+      title: song.name.cleanHtml,
+      subtitle: song.artists.primary.map((e) => e.name).join(', '),
+      headerDesc: null,
+      type: song.type,
+      permaUrl: song.url,
+      image: imageUrl == null ? null : ImageUrl(imageUrl),
+      language: song.language,
+      year: song.year,
+      playCount: song.playCount?.toString(),
+      explicitContent: song.explicitContent.toString(),
+      listCount: null,
+      listType: null,
+      list: null,
+      moreInfo: SongDetailsInfo(
+        music: null,
+        albumId: song.album.id,
+        album: song.album.name?.cleanHtml,
+        label: song.label,
+        origin: null,
+        isDolbyContent: null,
+        the320Kbps: downloadUrl320Kbps.url,
+        mediaUrl: mediaUrl == null ? null : MediaUrl(mediaUrl),
+        albumUrl: song.album.url,
+        duration: song.duration?.toString(),
+        cacheState: null,
+        hasLyrics: song.hasLyrics.toString(),
+        lyricsSnippet: null,
+        starred: null,
+        copyrightText: song.copyright,
+        artistMap: ArtistMap.fromJson(song.artists.toJson()),
+        releaseDate: song.releaseDate,
+        labelUrl: null,
+        vcode: null,
+        vlink: null,
+        trillerAvailable: null,
+        lyricsId: song.lyricsId,
+      ),
+    );
+  }
+
+  factory SongDetails.fromApiSongsIdGetResponse(
+      ApiSongsIdGet$Response$Data$Item song) {
+    final downloadUrl320Kbps = song.downloadUrl.firstWhere(
+      (e) => e.quality == '320kbps',
+      orElse: () => song.downloadUrl.last,
+    );
+    final mediaUrl =
+        song.downloadUrl.isNotEmpty ? song.downloadUrl.last.url : null;
+
+    return SongDetails(
+      id: song.id,
+      title: song.name.cleanHtml,
+      subtitle: song.artists.primary.map((e) => e.name).join(', '),
+      headerDesc: null,
+      type: song.type,
+      permaUrl: song.url,
+      image: song.image.isNotEmpty ? ImageUrl(song.image.last.url) : null,
+      moreInfo: SongDetailsInfo(
+        music: null,
+        albumId: song.album.id,
+        album: song.album.name,
+        label: song.label,
+        origin: null,
+        isDolbyContent: null,
+        the320Kbps: downloadUrl320Kbps.url,
+        mediaUrl: mediaUrl == null ? null : MediaUrl(mediaUrl),
+        albumUrl: song.album.url,
+        duration: song.duration?.toString(),
+        cacheState: null,
+        hasLyrics: song.hasLyrics.toString(),
+        lyricsSnippet: null,
+        starred: null,
+      ),
+    );
+  }
 }
 
 class SongDetailsInfo {

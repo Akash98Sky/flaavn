@@ -19,7 +19,12 @@ class AlbumListTile extends StatelessWidget {
       subtitle:
           Text('Album · ${album.subtitle ?? ''}'), // Adjust subtitle format
       trailing: const Icon(Icons.arrow_forward_ios),
-      onTap: () => goToAlbum(context, album.id),
+      onTap: () => goToAlbum(
+        context,
+        album.id,
+        album.permaUrl,
+        album.type ?? 'album',
+      ),
     );
   }
 }

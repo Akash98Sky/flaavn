@@ -1,64 +1,63 @@
-import 'package:flaavn/widgets/image_display.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/album.dart';
 import '../../routes.dart';
+import '../image_display.dart';
 
-class NewAlbumCard extends StatelessWidget {
+class NewAlbumCard extends ConsumerWidget {
   final AlbumDetails album;
 
   const NewAlbumCard({super.key, required this.album});
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(8.0, 8.0, 0, 8.0),
-      child: GestureDetector(
-        onTap: () => goToAlbum(context, album.id),
-        child: SizedBox(
-          height: 160,
-          width: 160,
-          child: Card(
-            elevation: 5.0,
-            child: Padding(
-              padding: const EdgeInsetsDirectional.fromSTEB(12, 12, 12, 12),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ImageDisplay(
-                    album.image!.high,
-                    borderRadius: BorderRadius.circular(80),
-                  ),
-                  Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
-                    child: Text(
-                      album.title,
-                      style: const TextStyle(
-                        fontFamily: 'Outfit',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      maxLines: 1,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                    child: Text(
-                      album.subtitle ?? '',
-                      style: const TextStyle(
-                        fontFamily: 'Outfit',
-                        fontSize: 12,
-                        fontWeight: FontWeight.normal,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      maxLines: 1,
-                    ),
-                  ),
-                ],
+  Widget build(BuildContext context, WidgetRef ref) {
+    return GestureDetector(
+      onTap: () => goToAlbum(
+        context,
+        album.id,
+        album.permaUrl,
+        album.type ?? 'album',
+      ),
+      child: Card(
+        elevation: 5.0,
+        child: Padding(
+          padding: const EdgeInsetsDirectional.fromSTEB(12, 12, 12, 12),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ImageDisplay(
+                album.image!.high,
+                borderRadius: BorderRadius.circular(80),
               ),
-            ),
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(0, 8, 0, 0),
+                child: Text(
+                  album.title,
+                  style: const TextStyle(
+                    fontFamily: 'Outfit',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  maxLines: 1,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                child: Text(
+                  album.subtitle ?? '',
+                  style: const TextStyle(
+                    fontFamily: 'Outfit',
+                    fontSize: 12,
+                    fontWeight: FontWeight.normal,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  maxLines: 1,
+                ),
+              ),
+            ],
           ),
         ),
       ),
@@ -76,7 +75,12 @@ class SqCleAlbumCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(4),
       child: GestureDetector(
-        onTap: () => goToAlbum(context, album.id),
+        onTap: () => goToAlbum(
+          context,
+          album.id,
+          album.permaUrl,
+          album.type ?? 'album',
+        ),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,

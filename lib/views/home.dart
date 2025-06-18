@@ -5,16 +5,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart'; // Import go_router
 
 import '../models/launch_data.dart';
-import '../services/cloud_funcs.dart';
+import '../providers/flaavn_api.dart';
 import '../widgets/appbar/flaavn_appbar.dart';
 import '../routes.dart';
 import '../widgets/lists/album_list.dart';
 import '../widgets/lists/playlists_list.dart';
+import '../widgets/lists/trending_list.dart';
 import '../widgets/network_error.dart'; // Import routes for SearchScreenRoute
 
 final _discoverProvider = FutureProvider.autoDispose<LaunchData>((ref) {
-  final cloudFuncs = ServerlessFuncs();
-  return cloudFuncs.getLaunchData();
+  final apiProvider = ref.watch(flaavnApiProvider);
+  return apiProvider.apiLaunchDataGet();
 });
 
 class HomeScreen extends ConsumerWidget {
@@ -112,8 +113,7 @@ class HomeScreen extends ConsumerWidget {
               ),
               ConstrainedBox(
                 constraints: const BoxConstraints(maxHeight: 250),
-                child: TopPlayListing(
-                    playlists: data.topPlaylists), // Reusing for now
+                child: TrendingList(trendings: data.newTrending),
               ),
               const SizedBox(height: 20),
             ],

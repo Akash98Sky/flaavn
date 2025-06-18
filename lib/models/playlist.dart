@@ -1,3 +1,5 @@
+import '../extentions/string_extentions.dart';
+import '../generated/swagger/saavnapi.models.swagger.dart';
 import '../helpers/types.dart';
 import 'json_model.dart';
 import 'song.dart';
@@ -134,6 +136,20 @@ class Playlist extends JsonModel {
         'mini_obj': miniObj,
         'description': description,
       };
+
+  factory Playlist.fromApiSearchGetResponse(
+          ApiSearchGet$Response$Data$Playlists$Results$Item e) =>
+      Playlist(
+        id: e.id,
+        title: e.title.cleanHtml,
+        subtitle: e.description.cleanHtml,
+        type: e.type,
+        image: e.image.isNotEmpty ? ImageUrl(e.image.first.url) : null,
+        permaUrl: e.url,
+        moreInfo: PlaylistInfo(
+          language: e.language,
+        ),
+      );
 }
 
 class PlaylistInfo {
@@ -185,8 +201,8 @@ class PlaylistInfo {
 class PlaylistDetails {
   PlaylistDetails({
     this.id = '',
-    this.title,
-    this.subtitle,
+    required this.title,
+    required this.subtitle,
     this.headerDesc,
     this.type,
     this.permaUrl,
@@ -202,8 +218,8 @@ class PlaylistDetails {
   });
 
   final String id;
-  final String? title;
-  final String? subtitle;
+  final String title;
+  final String subtitle;
   final String? headerDesc;
   final String? type;
   final String? permaUrl;
@@ -254,6 +270,23 @@ class PlaylistDetails {
         'list': List<dynamic>.from(list.map((x) => x.toJson())),
         'more_info': moreInfo.toJson(),
       };
+
+  factory PlaylistDetails.fromApiPlaylistsGetResponse(
+    ApiPlaylistsGet$Response$Data data,
+  ) {
+    return PlaylistDetails(
+      id: data.id,
+      title: data.name.cleanHtml,
+      subtitle: data.artists.map((e) => e.name.cleanHtml).join(', '),
+      headerDesc: null,
+      type: data.type,
+      permaUrl: data.url,
+      image: data.image.isNotEmpty ? ImageUrl(data.image.last.url) : null,
+      list: data.songs
+          .map((song) => SongDetails.fromApiPlaylistsGetResponse(song))
+          .toList(),
+    );
+  }
 }
 
 class PlaylistDetailsInfo {

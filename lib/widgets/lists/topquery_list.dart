@@ -6,14 +6,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../models/chart.dart';
 import '../../models/song.dart';
+import '../../providers/flaavn_api.dart';
 import '../../providers/player.dart';
 import '../../routes.dart';
-import '../../services/cloud_funcs.dart';
 import '../tiles/circular_tile.dart';
 
 final _songsProvider = FutureProvider.family<SongDetails, String>((ref, id) {
-  final cloudFuncs = ServerlessFuncs();
-  return cloudFuncs.getSongs([id]).then((value) => value.first);
+  final apiProvider = ref.watch(flaavnApiProvider);
+  return apiProvider.apiSongsIdGet(id: id);
 });
 
 class TopQueryList extends ConsumerWidget {
@@ -46,7 +46,12 @@ class TopQueryList extends ConsumerWidget {
             onTap: () async {
               switch (topquery[index].type.toLowerCase()) {
                 case 'album':
-                  return goToAlbum(context, topquery[index].id);
+                  return goToAlbum(
+                    context,
+                    topquery[index].id,
+                    topquery[index].permaUrl,
+                    topquery[index].type,
+                  );
                 case 'playlist':
                   return goToPlaylist(context, topquery[index].id);
                 case 'song':

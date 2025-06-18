@@ -24,7 +24,7 @@ class NewTrending {
   final String title;
   final String subtitle;
   final String headerDesc;
-  final ItemType? type;
+  final ItemType type;
   final String permaUrl;
   final String image;
   final String language;
@@ -41,10 +41,8 @@ class NewTrending {
         title: json['title'],
         subtitle: json['subtitle'],
         headerDesc: json['header_desc'],
-        type: json['type'] == null
-            ? null
-            : ItemType.values.firstWhere(
-                (type) => (json['type'] as String).compareTo(type.name) == 0),
+        type: ItemType.values.firstWhere(
+            (type) => (json['type'] as String).compareTo(type.name) == 0),
         permaUrl: json['perma_url'],
         image: json['image'],
         language: json['language'],
@@ -62,7 +60,7 @@ class NewTrending {
         'title': title,
         'subtitle': subtitle,
         'header_desc': headerDesc,
-        'type': type?.name,
+        'type': type.name,
         'perma_url': permaUrl,
         'image': image,
         'language': language,

@@ -2,7 +2,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/playlist.dart';
-import '../cards/playlist_card.dart';
+import '../../routes.dart' show goToPlaylist;
+import '../tiles/circular_tile.dart';
 
 class TopPlayListing extends StatelessWidget {
   final List<TopPlaylist> playlists;
@@ -25,8 +26,21 @@ class TopPlayListing extends StatelessWidget {
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: playlists.length,
-          itemBuilder: (context, index) =>
-              TopPlaylistCard(playlist: playlists[index]),
+          itemBuilder: (context, index) => Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4.0),
+            child: SizedBox(
+              width: 160,
+              child: CircularTile(
+                title: playlists[index].title,
+                subtitle: playlists[index].subtitle,
+                image: playlists[index].image,
+                onTap: () => goToPlaylist(
+                  context,
+                  playlists[index].id,
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );

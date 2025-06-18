@@ -1,0 +1,22 @@
+targets:
+  $default:
+    sources:
+      - lib/**
+      - docs/swaggers/**
+    builders:
+      chopper_generator:
+        options:
+          header: "//Generated code"
+      swagger_dart_code_generator:
+        options:
+          input_folder: "docs/swaggers/"
+          output_folder: "lib/generated/swagger/"
+          input_urls:
+            - url: "https://saavn.dev/swagger"
+              file_name: "saavnapi.json"
+          with_base_url: true
+          with_converter: true
+          separate_models: true
+          default_values_map:
+            - type_name: String
+              default_value: ""
