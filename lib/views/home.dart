@@ -33,11 +33,10 @@ class HomeScreen extends ConsumerWidget {
           'Hey there',
           style: Theme.of(context).textTheme.displaySmall,
         ),
-        leading: const Padding(
+        leading: Padding(
           padding: EdgeInsets.all(8.0),
           child: CircleAvatar(
-            backgroundImage:
-                AssetImage('design/artist.png'), // Placeholder for user avatar
+            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           ),
         ),
       ),

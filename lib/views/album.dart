@@ -7,6 +7,7 @@ import '../../widgets/image_display.dart';
 import '../models/album.dart';
 import '../models/song.dart';
 import '../providers/flaavn_api.dart';
+import '../providers/library.dart';
 import '../providers/player_controller.dart';
 import '../widgets/lists/songs_list.dart';
 import '../widgets/media_actions.dart';
@@ -105,9 +106,21 @@ class AlbumView extends ConsumerWidget {
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
                 const SizedBox(height: 16),
-                MediaActions(
-                  onPlay: () =>
-                      ref.read(playerControllerProvider).setQueue(album.list),
+                FutureBuilder<bool>(
+                  initialData: false,
+                  future:
+                      ref.read(libraryServiceProvider).isAlbumLiked(album.id),
+                  builder: (context, asyncSnapshot) {
+                    return MediaActions(
+                      isLiked: asyncSnapshot.data!,
+                      onPlay: () => ref
+                          .read(playerControllerProvider)
+                          .setQueue(album.list),
+                      onFavourite: () => ref
+                          .read(libraryServiceProvider)
+                          .toggleLikedAlbum(album.id),
+                    );
+                  },
                 ),
               ],
             ),
@@ -162,9 +175,19 @@ class SongView extends ConsumerWidget {
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
                 const SizedBox(height: 16),
-                MediaActions(
-                  onPlay: () =>
-                      ref.read(playerControllerProvider).setQueue([song]),
+                FutureBuilder<bool>(
+                  initialData: false,
+                  future: ref.read(libraryServiceProvider).isSongLiked(song.id),
+                  builder: (context, asyncSnapshot) {
+                    return MediaActions(
+                      isLiked: asyncSnapshot.data!,
+                      onPlay: () =>
+                          ref.read(playerControllerProvider).setQueue([song]),
+                      onFavourite: () => ref
+                          .read(libraryServiceProvider)
+                          .toggleLikedSong(song.id),
+                    );
+                  },
                 ),
               ],
             ),

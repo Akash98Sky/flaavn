@@ -47,6 +47,7 @@ dependencies:
   google_fonts: ^6.2.1
   chopper: ^8.1.0
   json_annotation: ^4.9.0
+  shared_preferences: ^2.5.3
 
 dev_dependencies:
   flutter_test:

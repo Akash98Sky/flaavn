@@ -1,19 +1,32 @@
+import 'package:flaavn/models/song.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../models/playlist.dart';
 import '../providers/flaavn_api.dart';
+import '../providers/library.dart';
 import '../providers/player_controller.dart';
 import '../widgets/image_display.dart';
 import '../widgets/lists/songs_list.dart';
 import '../widgets/media_actions.dart';
 
-final _playlistProvider =
-    FutureProvider.family<PlaylistDetails, String>((ref, id) {
-  final apiProvider = ref.watch(flaavnApiProvider);
-  return apiProvider.apiPlaylistsGet(id: id);
-});
+final _playlistProvider = FutureProvider.family<PlaylistDetails, String>(
+  (ref, id) async {
+    final apiProvider = ref.watch(flaavnApiProvider);
+    if (id == '0') {
+      // This id is reserved for Liked Songs
+      final libraryService = ref.watch(libraryServiceProvider);
+      final likedSongIds = await libraryService.getLikedSongs();
+      final likedSongs = likedSongIds.isNotEmpty
+          ? await apiProvider.apiSongsGet(ids: likedSongIds)
+          : <SongDetails>[];
+
+      return PlaylistDetails.fromLikedSongs(likedSongs);
+    }
+    return apiProvider.apiPlaylistsGet(id: id);
+  },
+);
 
 class PlaylistScreen extends ConsumerWidget {
   final String playlistId;
@@ -62,10 +75,22 @@ class PlaylistScreen extends ConsumerWidget {
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                     const SizedBox(height: 16),
-                    MediaActions(
-                      onPlay: () => ref
-                          .read(playerControllerProvider)
-                          .setQueue(data.list),
+                    FutureBuilder<bool>(
+                      initialData: false,
+                      future: ref
+                          .read(libraryServiceProvider)
+                          .isPlaylistLiked(data.id),
+                      builder: (context, asyncSnapshot) {
+                        return MediaActions(
+                          isLiked: asyncSnapshot.data!,
+                          onPlay: () => ref
+                              .read(playerControllerProvider)
+                              .setQueue(data.list),
+                          onFavourite: () => ref
+                              .read(libraryServiceProvider)
+                              .toggleLikedPlaylist(data.id),
+                        );
+                      },
                     ),
                   ],
                 ),

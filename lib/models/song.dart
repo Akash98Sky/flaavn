@@ -336,6 +336,11 @@ class SongDetails {
       ),
     );
   }
+
+  factory SongDetails.fromApiSongsGetResponse(
+          ApiSongsGet$Response$Data$Item song) =>
+      SongDetails.fromApiSongsIdGetResponse(
+          ApiSongsIdGet$Response$Data$Item.fromJson(song.toJson()));
 }
 
 class SongDetailsInfo {

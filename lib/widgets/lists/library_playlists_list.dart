@@ -1,60 +1,22 @@
 import 'package:flutter/material.dart';
+
 import '../../models/playlist.dart';
 import '../../routes.dart' show goToPlaylist;
 import '../image_display.dart';
-import '../../helpers/types.dart'; // Import ImageUrl
 
 class PlaylistsList extends StatelessWidget {
-  const PlaylistsList({super.key});
+  final List<PlaylistDetails> playlists;
+
+  const PlaylistsList({
+    super.key,
+    required this.playlists,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // Placeholder data for playlists
-    final List<Playlist> playlists = [
-      Playlist(
-        id: '1',
-        title: 'Liked Songs',
-        subtitle: '483 Songs',
-        image: ImageUrl(
-            'https://via.placeholder.com/150/FF5733/FFFFFF?text=Liked'),
-      ),
-      Playlist(
-        id: '2',
-        title: 'New Episodes',
-        subtitle: 'Updated 2 days ago',
-        image: ImageUrl(
-            'https://via.placeholder.com/150/33FF57/FFFFFF?text=Episodes'),
-      ),
-      Playlist(
-        id: '3',
-        title: 'My life is a movie',
-        subtitle: 'Playlist • Julia Hertz',
-        image: ImageUrl(
-            'https://via.placeholder.com/150/3357FF/FFFFFF?text=Movie'),
-      ),
-      Playlist(
-        id: '4',
-        title: 'Your Top Songs 2022',
-        subtitle: 'Playlist',
-        image:
-            ImageUrl('https://via.placeholder.com/150/FFFF33/FFFFFF?text=Top'),
-      ),
-      Playlist(
-        id: '5',
-        title: 'Acoustic Chill',
-        subtitle: 'Playlist',
-        image: ImageUrl(
-            'https://via.placeholder.com/150/FF33FF/FFFFFF?text=Chill'),
-      ),
-      Playlist(
-        id: '6',
-        title: 'Amour de lycee',
-        subtitle: 'Playlist • John Valson',
-        image: ImageUrl(
-            'https://via.placeholder.com/150/33FFFF/FFFFFF?text=Amour'),
-      ),
-    ];
-
+    if (playlists.isEmpty) {
+      return const Center(child: Text('No liked playlists yet.'));
+    }
     return ListView.builder(
       itemCount: playlists.length,
       itemBuilder: (context, index) {
@@ -66,7 +28,7 @@ class PlaylistsList extends StatelessWidget {
 }
 
 class PlaylistTile extends StatelessWidget {
-  final Playlist playlist;
+  final PlaylistDetails playlist;
 
   const PlaylistTile({super.key, required this.playlist});
 
@@ -83,7 +45,9 @@ class PlaylistTile extends StatelessWidget {
               width: 60,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8.0),
-                child: ImageDisplay(playlist.image!.low),
+                child: playlist.id == '0'
+                    ? Icon(Icons.thumb_up_sharp)
+                    : ImageDisplay(playlist.image!.low),
               ),
             ),
             const SizedBox(width: 16),
@@ -92,13 +56,13 @@ class PlaylistTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    playlist.title ?? '',
+                    playlist.title,
                     style: Theme.of(context).textTheme.titleMedium,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   Text(
-                    playlist.subtitle ?? '',
+                    playlist.subtitle,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: Theme.of(context)
                               .colorScheme

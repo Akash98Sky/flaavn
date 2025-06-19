@@ -287,6 +287,20 @@ class PlaylistDetails {
           .toList(),
     );
   }
+
+  factory PlaylistDetails.fromLikedSongs(List<SongDetails> songs) =>
+      PlaylistDetails(
+        id: '0',
+        title: 'Liked Songs',
+        subtitle: '${songs.length} Songs',
+        list: songs,
+      );
+
+  factory PlaylistDetails.fromLikedSongsCount(int count) => PlaylistDetails(
+        id: '0',
+        title: 'Liked Songs',
+        subtitle: '$count Songs',
+      );
 }
 
 class PlaylistDetailsInfo {

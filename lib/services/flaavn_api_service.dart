@@ -79,6 +79,19 @@ class FlaavnApiService {
         query: query, page: page, limit: limit);
   }
 
+  Future<List<SongDetails>> apiSongsGet({
+    List<String>? ids,
+    List<String>? links,
+  }) async {
+    return await _saavnapi
+        .apiSongsGet(ids: ids?.join(','), link: links?.join(','))
+        .then(
+          (response) => response.bodyOrThrow.data
+              .map((song) => SongDetails.fromApiSongsGetResponse(song))
+              .toList(growable: false),
+        );
+  }
+
   Future<SongDetails> apiSongsIdGet({required String? id}) async {
     return await _saavnapi.apiSongsIdGet(id: id).then((response) =>
         SongDetails.fromApiSongsIdGetResponse(response.bodyOrThrow.data.first));

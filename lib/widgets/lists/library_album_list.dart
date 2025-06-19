@@ -2,62 +2,17 @@ import 'package:flutter/material.dart';
 import '../../models/album.dart';
 import '../../routes.dart' show goToAlbum;
 import '../image_display.dart';
-import '../../helpers/types.dart'; // Import ImageUrl
 
 class AlbumList extends StatelessWidget {
-  const AlbumList({super.key});
+  final List<AlbumDetails> albums;
+
+  const AlbumList({super.key, required this.albums});
 
   @override
   Widget build(BuildContext context) {
-    // Placeholder data for albums
-    final List<Album> albums = [
-      Album(
-        id: '1',
-        title: 'Album Title 1',
-        subtitle: 'Artist Name 1',
-        image: ImageUrl(
-            'https://via.placeholder.com/150/FF5733/FFFFFF?text=Album1'),
-        permaUrl: 'https://example.com/album/1',
-        type: 'album',
-      ),
-      Album(
-        id: '2',
-        title: 'Album Title 2',
-        subtitle: 'Artist Name 2',
-        image: ImageUrl(
-            'https://via.placeholder.com/150/33FF57/FFFFFF?text=Album2'),
-        permaUrl: 'https://example.com/album/2',
-        type: 'album',
-      ),
-      Album(
-        id: '3',
-        title: 'Album Title 3',
-        subtitle: 'Artist Name 3',
-        image: ImageUrl(
-            'https://via.placeholder.com/150/3357FF/FFFFFF?text=Album3'),
-        permaUrl: 'https://example.com/album/3',
-        type: 'album',
-      ),
-      Album(
-        id: '4',
-        title: 'Album Title 4',
-        subtitle: 'Artist Name 4',
-        image: ImageUrl(
-            'https://via.placeholder.com/150/FFFF33/FFFFFF?text=Album4'),
-        permaUrl: 'https://example.com/album/4',
-        type: 'album',
-      ),
-      Album(
-        id: '5',
-        title: 'Album Title 5',
-        subtitle: 'Artist Name 5',
-        image: ImageUrl(
-            'https://via.placeholder.com/150/FF33FF/FFFFFF?text=Album5'),
-        permaUrl: 'https://example.com/album/5',
-        type: 'album',
-      ),
-    ];
-
+    if (albums.isEmpty) {
+      return const Center(child: Text('No liked albums yet.'));
+    }
     return ListView.builder(
       itemCount: albums.length,
       itemBuilder: (context, index) {
@@ -69,7 +24,7 @@ class AlbumList extends StatelessWidget {
 }
 
 class AlbumTile extends StatelessWidget {
-  final Album album;
+  final AlbumDetails album;
 
   const AlbumTile({super.key, required this.album});
 
