@@ -28,6 +28,9 @@ jobs:
       - name: Install Flutter dependencies
         run: flutter pub get
 
+      - name: Generate auto-generated source code
+        run: dart run build_runner build --delete-conflicting-outputs
+
       - name: Analyze project source
         run: dart analyze
 
