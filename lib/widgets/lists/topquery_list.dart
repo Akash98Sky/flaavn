@@ -42,7 +42,7 @@ class TopQueryList extends ConsumerWidget {
           itemBuilder: (context, index) => CircularTile(
             title: topquery[index].title,
             subtitle: topquery[index].subtitle ?? '',
-            image: topquery[index].image,
+            image: topquery[index].image.low,
             onTap: () async {
               switch (topquery[index].type.toLowerCase()) {
                 case 'album':

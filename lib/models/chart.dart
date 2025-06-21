@@ -1,5 +1,6 @@
 import 'package:flaavn/generated/swagger/saavnapi.models.swagger.dart';
 
+import '../helpers/types.dart';
 import 'json_model.dart';
 
 class Chart extends JsonModel {
@@ -18,7 +19,7 @@ class Chart extends JsonModel {
   final String title;
   final String? subtitle;
   final String type;
-  final String image;
+  final ImageUrl image;
   final String permaUrl;
   final String? explicitContent;
   final String language;
@@ -28,7 +29,7 @@ class Chart extends JsonModel {
         title: json['title'],
         subtitle: json['subtitle'],
         type: json['type'],
-        image: json['image'],
+        image: ImageUrl(json['image'] as String),
         permaUrl: json['perma_url'],
         explicitContent: json['explicit_content'],
         language: json['language'] ?? '',
@@ -52,7 +53,7 @@ class Chart extends JsonModel {
         title: e.title,
         subtitle: e.description,
         type: e.type,
-        image: e.image.last.url,
+        image: ImageUrl(e.image.last.url),
         permaUrl: e.url,
         language: e.language,
       );

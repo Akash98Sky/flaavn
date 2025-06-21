@@ -28,7 +28,7 @@ class NewAlbumCard extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ImageDisplay(
-                album.image!.high,
+                album.image.low,
                 borderRadius: BorderRadius.circular(80),
               ),
               Padding(
@@ -93,7 +93,7 @@ class SqCleAlbumCard extends StatelessWidget {
               )
             ],
             image: DecorationImage(
-              image: NetworkImage(album.image!.high),
+              image: NetworkImage(album.image.low),
               fit: BoxFit.cover,
             ),
             borderRadius: BorderRadius.circular(8),

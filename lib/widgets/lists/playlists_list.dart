@@ -24,6 +24,7 @@ class TopPlayListing extends StatelessWidget {
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxHeight: 200),
         child: ListView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 4.0),
           scrollDirection: Axis.horizontal,
           itemCount: playlists.length,
           itemBuilder: (context, index) => Padding(

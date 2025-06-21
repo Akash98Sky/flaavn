@@ -75,7 +75,7 @@ class _PlayerState extends State<Player> {
           Expanded(
             child: Hero(
               tag: _currentSong!.id,
-              child: ImageDisplay(_currentSong!.image!.high),
+              child: ImageDisplay(_currentSong!.image.high),
             ),
           ),
           Padding(
@@ -139,7 +139,7 @@ class _PlayerState extends State<Player> {
       children: [
         Hero(
           tag: _currentSong!.id,
-          child: ImageDisplay(_currentSong!.image!.high),
+          child: ImageDisplay(_currentSong!.image.low),
         ),
         Expanded(
           child: Column(

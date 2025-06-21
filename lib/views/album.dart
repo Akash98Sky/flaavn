@@ -86,7 +86,7 @@ class AlbumView extends ConsumerWidget {
                   width: 150,
                   height: 150,
                   child: ImageDisplay(
-                    album.image!.high,
+                    album.image.high,
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
@@ -116,6 +116,9 @@ class AlbumView extends ConsumerWidget {
                       onPlay: () => ref
                           .read(playerControllerProvider)
                           .setQueue(album.list),
+                      onShuffle: () => ref
+                          .read(playerControllerProvider)
+                          .setQueue(album.list, shuffle: true),
                       onFavourite: () => ref
                           .read(libraryServiceProvider)
                           .toggleLikedAlbum(album.id),
@@ -155,7 +158,7 @@ class SongView extends ConsumerWidget {
                   width: 150,
                   height: 150,
                   child: ImageDisplay(
-                    song.image!.high,
+                    song.image.high,
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
@@ -183,6 +186,9 @@ class SongView extends ConsumerWidget {
                       isLiked: asyncSnapshot.data!,
                       onPlay: () =>
                           ref.read(playerControllerProvider).setQueue([song]),
+                      onShuffle: () => ref
+                          .read(playerControllerProvider)
+                          .setQueue([song], shuffle: true),
                       onFavourite: () => ref
                           .read(libraryServiceProvider)
                           .toggleLikedSong(song.id),

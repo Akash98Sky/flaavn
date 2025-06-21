@@ -41,7 +41,7 @@ class AlbumTile extends StatelessWidget {
               width: 60,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8.0),
-                child: ImageDisplay(album.image!.low),
+                child: ImageDisplay(album.image.low),
               ),
             ),
             const SizedBox(width: 16),

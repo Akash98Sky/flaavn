@@ -1,7 +1,7 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/foundation.dart';
 
 import '../models/song.dart';
 
@@ -30,7 +30,7 @@ class PlayerController {
 
   String? get currentMediaUrl =>
       _queuePosition >= 0 && _queuePosition < _queue.length
-          ? _queue[_queuePosition].moreInfo.mediaUrl!.high
+          ? _queue[_queuePosition].moreInfo.mediaUrl.high
           : null;
 
   Future<Duration?> get currentMediaDuration => _player.getDuration();
@@ -51,12 +51,19 @@ class PlayerController {
     }
   }
 
-  void setQueue(Iterable<SongDetails> medias) {
+  void setQueue(
+    Iterable<SongDetails> medias, {
+    bool startPlaying = true,
+    bool shuffle = false,
+  }) {
     _queue.clear();
     _queue.addAll(medias);
+    if (shuffle) {
+      _queue.shuffle();
+    }
     final media = _queue[_queuePosition = 0];
     _mediaStream.add(media);
-    play();
+    if (startPlaying) play();
   }
 
   void init() {
@@ -68,7 +75,7 @@ class PlayerController {
       }
     }));
     _player.onPlayerStateChanged.listen((event) {
-      debugPrint('Player state changed: $event');
+      log('Player state changed: $event');
     });
   }
 

@@ -23,6 +23,7 @@ class NewAlbumList extends StatelessWidget {
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxHeight: 230),
         child: ListView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 4.0),
           scrollDirection: Axis.horizontal,
           itemCount: albums.length,
           itemBuilder: (context, index) => SizedBox(

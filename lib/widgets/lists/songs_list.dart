@@ -16,7 +16,7 @@ class SongsList extends ConsumerWidget {
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) => ListTile(
-          leading: ImageDisplay(songs[index].image!.high),
+          leading: ImageDisplay(songs[index].image.low),
           title: Text(songs[index].title),
           subtitle: Text(songs[index].subtitle ?? ''),
           onTap: () => controller.setQueue([songs[index]]),

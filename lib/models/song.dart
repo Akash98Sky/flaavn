@@ -130,11 +130,12 @@ class SongDetails {
   SongDetails({
     required this.id,
     required this.title,
+    required this.moreInfo,
     this.subtitle,
     this.headerDesc,
     this.type,
     this.permaUrl,
-    this.image,
+    required this.image,
     this.language,
     this.year,
     this.playCount,
@@ -142,7 +143,6 @@ class SongDetails {
     this.listCount,
     this.listType,
     this.list,
-    this.moreInfo = const SongDetailsInfo(),
   });
 
   final String id;
@@ -151,7 +151,7 @@ class SongDetails {
   final String? headerDesc;
   final String? type;
   final String? permaUrl;
-  final ImageUrl? image;
+  final ImageUrl image;
   final String? language;
   final String? year;
   final String? playCount;
@@ -168,7 +168,7 @@ class SongDetails {
         headerDesc: json['header_desc'],
         type: json['type'],
         permaUrl: json['perma_url'],
-        image: json['image'] == null ? null : ImageUrl(json['image']),
+        image: ImageUrl(json['image'] as String),
         language: json['language'],
         year: json['year'],
         playCount: json['play_count'],
@@ -199,13 +199,11 @@ class SongDetails {
 
   factory SongDetails.fromApiAlbumsGetResponse(
       ApiAlbumsGet$Response$Data$Songs$Item song) {
-    final imageUrl = song.image.isNotEmpty ? song.image.last.url : null;
     final downloadUrl320Kbps = song.downloadUrl.firstWhere(
       (e) => e.quality == '320kbps',
       orElse: () => song.downloadUrl.last,
     );
-    final mediaUrl =
-        song.downloadUrl.isNotEmpty ? song.downloadUrl.last.url : null;
+    final mediaUrl = song.downloadUrl.last.url;
 
     return SongDetails(
       id: song.id,
@@ -214,7 +212,7 @@ class SongDetails {
       headerDesc: null,
       type: song.type,
       permaUrl: song.url,
-      image: imageUrl == null ? null : ImageUrl(imageUrl),
+      image: ImageUrl(song.image.last.url),
       language: song.language,
       year: song.year,
       playCount: song.playCount?.toString(),
@@ -230,7 +228,7 @@ class SongDetails {
         origin: null,
         isDolbyContent: null,
         the320Kbps: downloadUrl320Kbps.url,
-        mediaUrl: mediaUrl == null ? null : MediaUrl(mediaUrl),
+        mediaUrl: MediaUrl(mediaUrl),
         albumUrl: song.album.url,
         duration: song.duration?.toString(),
         cacheState: null,
@@ -251,13 +249,11 @@ class SongDetails {
 
   factory SongDetails.fromApiPlaylistsGetResponse(
       ApiPlaylistsGet$Response$Data$Songs$Item song) {
-    final imageUrl = song.image.isNotEmpty ? song.image.last.url : null;
     final downloadUrl320Kbps = song.downloadUrl.firstWhere(
       (e) => e.quality == '320kbps',
       orElse: () => song.downloadUrl.last,
     );
-    final mediaUrl =
-        song.downloadUrl.isNotEmpty ? song.downloadUrl.last.url : null;
+    final mediaUrl = song.downloadUrl.last.url;
 
     return SongDetails(
       id: song.id,
@@ -266,7 +262,7 @@ class SongDetails {
       headerDesc: null,
       type: song.type,
       permaUrl: song.url,
-      image: imageUrl == null ? null : ImageUrl(imageUrl),
+      image: ImageUrl(song.image.last.url),
       language: song.language,
       year: song.year,
       playCount: song.playCount?.toString(),
@@ -282,7 +278,7 @@ class SongDetails {
         origin: null,
         isDolbyContent: null,
         the320Kbps: downloadUrl320Kbps.url,
-        mediaUrl: mediaUrl == null ? null : MediaUrl(mediaUrl),
+        mediaUrl: MediaUrl(mediaUrl),
         albumUrl: song.album.url,
         duration: song.duration?.toString(),
         cacheState: null,
@@ -307,8 +303,7 @@ class SongDetails {
       (e) => e.quality == '320kbps',
       orElse: () => song.downloadUrl.last,
     );
-    final mediaUrl =
-        song.downloadUrl.isNotEmpty ? song.downloadUrl.last.url : null;
+    final mediaUrl = song.downloadUrl.last.url;
 
     return SongDetails(
       id: song.id,
@@ -317,7 +312,7 @@ class SongDetails {
       headerDesc: null,
       type: song.type,
       permaUrl: song.url,
-      image: song.image.isNotEmpty ? ImageUrl(song.image.last.url) : null,
+      image: ImageUrl(song.image.last.url),
       moreInfo: SongDetailsInfo(
         music: null,
         albumId: song.album.id,
@@ -326,7 +321,7 @@ class SongDetails {
         origin: null,
         isDolbyContent: null,
         the320Kbps: downloadUrl320Kbps.url,
-        mediaUrl: mediaUrl == null ? null : MediaUrl(mediaUrl),
+        mediaUrl: MediaUrl(mediaUrl),
         albumUrl: song.album.url,
         duration: song.duration?.toString(),
         cacheState: null,
@@ -345,6 +340,7 @@ class SongDetails {
 
 class SongDetailsInfo {
   const SongDetailsInfo({
+    required this.mediaUrl,
     this.music,
     this.albumId,
     this.album,
@@ -352,7 +348,6 @@ class SongDetailsInfo {
     this.origin,
     this.isDolbyContent,
     this.the320Kbps,
-    this.mediaUrl,
     this.albumUrl,
     this.duration,
     this.cacheState,
@@ -376,7 +371,7 @@ class SongDetailsInfo {
   final String? origin;
   final bool? isDolbyContent;
   final String? the320Kbps;
-  final MediaUrl? mediaUrl;
+  final MediaUrl mediaUrl;
   final String? albumUrl;
   final String? duration;
   final String? cacheState;
@@ -401,8 +396,7 @@ class SongDetailsInfo {
         origin: json['origin'],
         isDolbyContent: json['is_dolby_content'],
         the320Kbps: json['320kbps'],
-        mediaUrl:
-            json['media_url'] == null ? null : MediaUrl(json['media_url']),
+        mediaUrl: MediaUrl(json['media_url']),
         albumUrl: json['album_url'],
         duration: json['duration'],
         cacheState: json['cache_state'],

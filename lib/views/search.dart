@@ -93,22 +93,22 @@ class SearchScreen extends ConsumerWidget {
               const SizedBox(height: 16),
 
               // Top Result (Artist)
-              if (data.artists.results.isNotEmpty) ...[
-                ListTile(
-                  leading: CircleAvatar(
-                    backgroundImage:
-                        NetworkImage(data.artists.results.first.image.high),
-                    radius: 30,
+              if (data.artists.results.isNotEmpty)
+                for (final artist in data.artists.results) ...[
+                  ListTile(
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(artist.image.low),
+                      radius: 30,
+                    ),
+                    title: Text(artist.name),
+                    subtitle: const Text('Artist'),
+                    trailing: const Icon(Icons.arrow_forward_ios),
+                    onTap: () {
+                      // Handle tap on top artist
+                    },
                   ),
-                  title: Text(data.artists.results.first.name),
-                  subtitle: const Text('Artist'),
-                  trailing: const Icon(Icons.arrow_forward_ios),
-                  onTap: () {
-                    // Handle tap on top artist
-                  },
-                ),
-                const SizedBox(height: 16),
-              ],
+                  const SizedBox(height: 16),
+                ],
 
               // Featuring Artist Section
               if (data.artists.results.isNotEmpty) ...[

@@ -46,8 +46,8 @@ class HomeScreen extends ConsumerWidget {
             children: [
               // Search Input Field
               Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0, vertical: 16.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16.0),
                 child: GestureDetector(
                   onTap: () {
                     context.go(const SearchScreenRoute().location);

@@ -24,6 +24,7 @@ class TrendingList extends StatelessWidget {
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxHeight: 200),
         child: ListView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 4.0),
           scrollDirection: Axis.horizontal,
           itemCount: trendings.length,
           itemBuilder: (context, index) => Padding(
@@ -33,7 +34,7 @@ class TrendingList extends StatelessWidget {
               child: CircularTile(
                 title: trendings[index].title,
                 subtitle: trendings[index].subtitle,
-                image: trendings[index].image,
+                image: trendings[index].image.low,
                 onTap: () => goToAlbum(
                   context,
                   trendings[index].id,

@@ -1,3 +1,4 @@
+import '../helpers/types.dart';
 import 'artists_map.dart';
 import 'item_types.dart';
 
@@ -26,7 +27,7 @@ class NewTrending {
   final String headerDesc;
   final ItemType type;
   final String permaUrl;
-  final String image;
+  final ImageUrl image;
   final String language;
   final String year;
   final String playCount;
@@ -44,7 +45,7 @@ class NewTrending {
         type: ItemType.values.firstWhere(
             (type) => (json['type'] as String).compareTo(type.name) == 0),
         permaUrl: json['perma_url'],
-        image: json['image'],
+        image: ImageUrl(json['image'] as String),
         language: json['language'],
         year: json['year'],
         playCount: json['play_count'],

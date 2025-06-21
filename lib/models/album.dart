@@ -11,7 +11,7 @@ class Album extends JsonModel {
     required this.title,
     this.subtitle,
     this.type,
-    this.image,
+    required this.image,
     required this.permaUrl,
     this.moreInfo = const AlbumInfo(),
     this.explicitContent,
@@ -23,7 +23,7 @@ class Album extends JsonModel {
   final String title;
   final String? subtitle;
   final String? type;
-  final ImageUrl? image;
+  final ImageUrl image;
   final String permaUrl;
   final AlbumInfo moreInfo;
   final String? explicitContent;
@@ -35,7 +35,7 @@ class Album extends JsonModel {
         title: json['title'],
         subtitle: json['subtitle'],
         type: json['type'],
-        image: json['image'] == null ? null : ImageUrl(json['image']),
+        image: ImageUrl(json['image']),
         permaUrl: json['perma_url'],
         moreInfo: AlbumInfo.fromJson(json['more_info']),
         explicitContent: json['explicit_content'],
@@ -64,7 +64,7 @@ class Album extends JsonModel {
         title: e.title.cleanHtml,
         subtitle: e.description.cleanHtml,
         type: e.type,
-        image: e.image.isNotEmpty ? ImageUrl(e.image.first.url) : null,
+        image: ImageUrl(e.image.first.url),
         permaUrl: e.url,
         moreInfo: AlbumInfo(
           year: e.year,
@@ -114,11 +114,11 @@ class AlbumDetails {
   AlbumDetails({
     required this.id,
     required this.title,
+    required this.image,
     this.subtitle,
     this.headerDesc,
     this.type,
     required this.permaUrl,
-    this.image,
     this.language,
     this.year,
     this.playCount,
@@ -135,7 +135,7 @@ class AlbumDetails {
   final String? headerDesc;
   final String? type;
   final String permaUrl;
-  final ImageUrl? image;
+  final ImageUrl image;
   final String? language;
   final String? year;
   final String? playCount;
@@ -152,7 +152,7 @@ class AlbumDetails {
         headerDesc: json['header_desc'],
         type: json['type'],
         permaUrl: json['perma_url'],
-        image: json['image'] == null ? null : ImageUrl(json['image']),
+        image: ImageUrl(json['image']),
         language: json['language'],
         year: json['year'],
         playCount: json['play_count'],
@@ -195,7 +195,7 @@ class AlbumDetails {
         headerDesc: data.description.cleanHtml,
         type: data.type,
         permaUrl: data.url,
-        image: data.image.isNotEmpty ? ImageUrl(data.image.first.url) : null,
+        image: ImageUrl(data.image.first.url),
         language: data.language,
         year: data.year?.toString(),
         playCount: data.playCount?.toString(),

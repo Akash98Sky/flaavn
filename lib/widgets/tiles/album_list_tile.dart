@@ -12,7 +12,7 @@ class AlbumListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: ImageDisplay(
-        album.image?.high ?? '',
+        album.image.low,
         borderRadius: BorderRadius.circular(4), // Square corners
       ),
       title: Text(album.title),

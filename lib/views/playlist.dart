@@ -86,6 +86,9 @@ class PlaylistScreen extends ConsumerWidget {
                           onPlay: () => ref
                               .read(playerControllerProvider)
                               .setQueue(data.list),
+                          onShuffle: () => ref
+                              .read(playerControllerProvider)
+                              .setQueue(data.list, shuffle: true),
                           onFavourite: () => ref
                               .read(libraryServiceProvider)
                               .toggleLikedPlaylist(data.id),
