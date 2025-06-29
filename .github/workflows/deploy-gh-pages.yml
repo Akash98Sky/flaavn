@@ -38,7 +38,7 @@ jobs:
 
       - name: Generate auto-generated source code
         env:
-          SENTRY_DNS: ${{ secrets.SENTRY_DNS }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
         run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Analyze project source
