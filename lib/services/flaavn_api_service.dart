@@ -12,13 +12,12 @@ import '../models/playlist.dart';
 import '../models/song.dart';
 
 class FlaavnApiService {
-  late Saavnapi _saavnapi;
+  final Saavnapi _saavnapi;
 
-  FlaavnApiService() {
-    _saavnapi = Saavnapi.create(
-      baseUrl: Uri.parse(saavnDevApiBaseUrl),
-    );
-  }
+  FlaavnApiService()
+      : _saavnapi = Saavnapi.create(
+          baseUrl: Uri.parse(saavnDevApiBaseUrl),
+        );
 
   Future<LaunchData> apiLaunchDataGet() async {
     return await _saavnapi.client.get(

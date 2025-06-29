@@ -1,14 +1,33 @@
+import 'dart:async' show runZonedGuarded;
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
+import 'env/env.dart';
+import 'helpers/observers.dart';
 import 'routes.dart';
 import 'theme.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  if (kIsWeb || kIsWasm) {
+    return runZonedGuarded(() async {
+      await SentryFlutter.init(
+        (options) => options.dsn = Env.sentryDsn,
+      );
 
-  runApp(ProviderScope(child: MyApp()));
+      runApp(MyApp());
+    }, (exception, stackTrace) async {
+      await Sentry.captureException(exception, stackTrace: stackTrace);
+    });
+  } else {
+    await SentryFlutter.init(
+      (options) => options.dsn = Env.sentryDsn,
+      appRunner: () => runApp(MyApp()),
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -18,6 +37,9 @@ class MyApp extends StatelessWidget {
       : router = GoRouter(
           routes: $appRoutes,
           initialLocation: '/',
+          observers: [
+            SentryNavigatorObserver(),
+          ],
         );
 
   // This widget is the root of your application.
@@ -28,13 +50,18 @@ class MyApp extends StatelessWidget {
         createTextTheme(context, "Be Vietnam Pro", "Be Vietnam Pro");
     final theme = MaterialTheme(textTheme);
 
-    return MaterialApp.router(
-      title: 'Flaavn Music',
-      theme: theme.light(),
-      darkTheme: theme.dark(),
-      themeMode:
-          brightness == Brightness.light ? ThemeMode.light : ThemeMode.dark,
-      routerConfig: router,
+    return ProviderScope(
+      observers: [
+        FlaavnProviderObserver(),
+      ],
+      child: MaterialApp.router(
+        title: 'Flaavn Music',
+        theme: theme.light(),
+        darkTheme: theme.dark(),
+        themeMode:
+            brightness == Brightness.light ? ThemeMode.light : ThemeMode.dark,
+        routerConfig: router,
+      ),
     );
   }
 }

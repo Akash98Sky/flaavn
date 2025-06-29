@@ -1,9 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../helpers/logger.dart';
 import '../../models/chart.dart';
 import '../../models/song.dart';
 import '../../providers/flaavn_api.dart';
@@ -56,10 +55,11 @@ class TopQueryList extends ConsumerWidget {
                   return goToPlaylist(context, topquery[index].id);
                 case 'song':
                   final state = ref.read(_songsProvider(topquery[index].id));
-                  state.when<void>(
+                  return state.when<void>(
                     data: (song) => controller.setQueue([song]),
-                    error: (error, stackTrace) => log(error.toString()),
-                    loading: () => log('loading ${topquery[index].title}'),
+                    error: (error, stackTrace) => logger.w(error.toString(),
+                        error: error, stackTrace: stackTrace),
+                    loading: () => logger.i('loading ${topquery[index].title}'),
                   );
               }
             },

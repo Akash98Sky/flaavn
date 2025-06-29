@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:audioplayers/audioplayers.dart';
 
+import '../helpers/logger.dart';
 import '../models/song.dart';
 
-class PlayerController {
+class PlayerControllerService {
   final _player = AudioPlayer();
   final _queue = <SongDetails>[];
   final _mediaStream = StreamController<SongDetails>.broadcast();
@@ -75,7 +75,7 @@ class PlayerController {
       }
     }));
     _player.onPlayerStateChanged.listen((event) {
-      log('Player state changed: $event');
+      logger.i('Player state changed: $event');
     });
   }
 

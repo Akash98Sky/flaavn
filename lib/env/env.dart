@@ -4,6 +4,6 @@ part 'env.g.dart';
 
 @Envied(useConstantCase: true)
 abstract class Env {
-    @EnviedField()
-    static const String sentryDns = _Env.sentryDns;
+  @EnviedField()
+  static const String sentryDsn = _Env.sentryDsn;
 }

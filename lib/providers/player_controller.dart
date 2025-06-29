@@ -1,9 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../player/controller.dart';
+import '../services/player_controller_service.dart';
 
-final playerControllerProvider = Provider<PlayerController>((ref) {
-  final coltroller = PlayerController();
+final playerControllerProvider = Provider<PlayerControllerService>((ref) {
+  final coltroller = PlayerControllerService();
   ref.onDispose(coltroller.dispose);
   return coltroller;
 });

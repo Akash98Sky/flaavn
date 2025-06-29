@@ -1,8 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart'; // Import go_router
+import 'package:go_router/go_router.dart';
 
 import '../models/launch_data.dart';
 import '../providers/flaavn_api.dart';
@@ -11,7 +9,7 @@ import '../routes.dart';
 import '../widgets/lists/album_list.dart';
 import '../widgets/lists/playlists_list.dart';
 import '../widgets/lists/trending_list.dart';
-import '../widgets/network_error.dart'; // Import routes for SearchScreenRoute
+import '../widgets/network_error.dart';
 
 final _discoverProvider = FutureProvider.autoDispose<LaunchData>((ref) {
   final apiProvider = ref.watch(flaavnApiProvider);
@@ -130,12 +128,9 @@ class HomeScreen extends ConsumerWidget {
             ],
           );
         },
-        error: (err, st) {
-          log(err.toString());
-          return NetworkError(onRetry: () {
-            ref.invalidate(_discoverProvider);
-          });
-        },
+        error: (err, st) => NetworkError(onRetry: () {
+          ref.invalidate(_discoverProvider);
+        }),
         loading: () => const Center(child: CircularProgressIndicator()),
       ),
     );

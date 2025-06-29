@@ -1,8 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../helpers/logger.dart';
 import '../models/album.dart';
 import '../models/playlist.dart';
 import '../providers/flaavn_api.dart';
@@ -28,7 +27,8 @@ final _likedPlaylistsProvider = FutureProvider<List<PlaylistDetails>>(
         playlists.add(playlistDetails);
       } catch (e) {
         // Handle error or skip if playlist not found
-        log('Error fetching playlist $id: $e');
+        logger.w('Error fetching playlist $id',
+            error: e, stackTrace: StackTrace.current);
       }
     }
     return playlists;
@@ -50,7 +50,8 @@ final _likedAlbumsProvider = FutureProvider<List<AlbumDetails>>(
         albums.add(albumDetails);
       } catch (e) {
         // Handle error or skip if album not found
-        log('Error fetching album $id: $e');
+        logger.w('Error fetching album $id',
+            error: e, stackTrace: StackTrace.current);
       }
     }
     return albums;

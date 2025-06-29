@@ -1,17 +1,17 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 
+import '../../helpers/logger.dart';
 import '../../models/song.dart';
 import '../image_display.dart';
-import '../../player/controller.dart';
+import '../../services/player_controller_service.dart';
 
 class Player extends StatefulWidget {
-  final PlayerController controller;
+  final PlayerControllerService controller;
   final bool miniPlayer;
 
   const Player({
@@ -39,13 +39,13 @@ class _PlayerState extends State<Player> {
 
     _subscriptions.addAll([
       widget.controller.onMediaChanged.listen((song) {
-        log('Media changed: $song');
+        logger.d('Media changed: $song');
         setState(() {
           _currentSong = song;
         });
       }),
       widget.controller.onDurationChanged.listen((duration) {
-        log('Duration changed: $duration');
+        logger.d('Duration changed: $duration');
         setState(() {
           _currentDuration = duration;
         });
