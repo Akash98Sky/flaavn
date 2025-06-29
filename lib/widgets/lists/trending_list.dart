@@ -38,7 +38,6 @@ class TrendingList extends StatelessWidget {
                 onTap: () => goToAlbum(
                   context,
                   trendings[index].id,
-                  trendings[index].permaUrl,
                   trendings[index].type.name,
                 ),
               ),

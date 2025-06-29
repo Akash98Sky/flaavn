@@ -12,10 +12,9 @@ import '../providers/player_controller.dart';
 import '../widgets/lists/songs_list.dart';
 import '../widgets/media_actions.dart';
 
-final _albumProvider =
-    FutureProvider.family<AlbumDetails, AlbumScreenArguments>((ref, args) {
+final _albumProvider = FutureProvider.family<AlbumDetails, String>((ref, id) {
   final apiProvider = ref.watch(flaavnApiProvider);
-  return apiProvider.apiAlbumsGet(id: args.id, link: args.link);
+  return apiProvider.apiAlbumsGet(id: id);
 });
 
 final _songProvider = FutureProvider.family<SongDetails, String>((ref, id) {
@@ -25,14 +24,9 @@ final _songProvider = FutureProvider.family<SongDetails, String>((ref, id) {
 
 class AlbumScreenArguments {
   final String id;
-  final String link;
   final String type;
 
-  AlbumScreenArguments({
-    required this.id,
-    required this.link,
-    required this.type,
-  });
+  AlbumScreenArguments({required this.id, required this.type});
 }
 
 class AlbumScreen extends ConsumerWidget {
@@ -53,7 +47,7 @@ class AlbumScreen extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
       );
     } else {
-      final albumState = ref.watch(_albumProvider(arguments));
+      final albumState = ref.watch(_albumProvider(arguments.id));
       return albumState.when(
         data: (album) => AlbumView(album: album),
         error: (err, st) => Text('$err'),

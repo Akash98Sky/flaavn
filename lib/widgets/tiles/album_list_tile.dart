@@ -26,12 +26,7 @@ class AlbumListTile extends StatelessWidget {
             ),
       ), // Adjust subtitle format
       trailing: const Icon(Icons.arrow_forward_ios),
-      onTap: () => goToAlbum(
-        context,
-        album.id,
-        album.permaUrl,
-        album.type ?? 'album',
-      ),
+      onTap: () => goToAlbum(context, album.id, album.type ?? 'album'),
     );
   }
 }

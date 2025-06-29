@@ -69,7 +69,6 @@ mixin _$HomeScreenRoute on GoRouteData {
 mixin _$AlbumRoute on GoRouteData {
   static AlbumRoute _fromState(GoRouterState state) => AlbumRoute(
         id: state.pathParameters['id']!,
-        link: state.uri.queryParameters['link']!,
         type: state.uri.queryParameters['type']!,
       );
 
@@ -79,7 +78,6 @@ mixin _$AlbumRoute on GoRouteData {
   String get location => GoRouteData.$location(
         '/album/${Uri.encodeComponent(_self.id)}',
         queryParams: {
-          'link': _self.link,
           'type': _self.type,
         },
       );

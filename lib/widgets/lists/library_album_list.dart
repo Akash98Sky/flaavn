@@ -31,7 +31,7 @@ class AlbumTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => goToAlbum(context, album.id, album.permaUrl, album.type!),
+      onTap: () => goToAlbum(context, album.id, album.type!),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: Row(

@@ -46,11 +46,7 @@ class TopQueryList extends ConsumerWidget {
               switch (topquery[index].type.toLowerCase()) {
                 case 'album':
                   return goToAlbum(
-                    context,
-                    topquery[index].id,
-                    topquery[index].permaUrl,
-                    topquery[index].type,
-                  );
+                      context, topquery[index].id, topquery[index].type);
                 case 'playlist':
                   return goToPlaylist(context, topquery[index].id);
                 case 'song':

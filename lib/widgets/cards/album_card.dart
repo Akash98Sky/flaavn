@@ -16,7 +16,6 @@ class NewAlbumCard extends ConsumerWidget {
       onTap: () => goToAlbum(
         context,
         album.id,
-        album.permaUrl,
         album.type ?? 'album',
       ),
       child: Card(
@@ -79,7 +78,6 @@ class SqCleAlbumCard extends StatelessWidget {
         onTap: () => goToAlbum(
           context,
           album.id,
-          album.permaUrl,
           album.type ?? 'album',
         ),
         child: Container(
