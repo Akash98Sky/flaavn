@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sentry_flutter/sentry_flutter.dart'
+    show SentryNavigatorObserver;
 
 import 'views/album.dart';
 import 'views/home.dart';
@@ -13,6 +15,15 @@ part 'routes.g.dart';
 
 final GlobalKey<NavigatorState> shellNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
+
+final routerConfig = GoRouter(
+  navigatorKey: rootNavigatorKey,
+  routes: $appRoutes,
+  initialLocation: '/',
+  observers: [
+    SentryNavigatorObserver(),
+  ],
+);
 
 void goToAlbum(BuildContext ctx, String id, String type) =>
     ctx.go(AlbumRoute(id: id, type: type).location);

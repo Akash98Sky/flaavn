@@ -1,46 +1,19 @@
-import 'dart:async' show runZonedGuarded;
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
 
-import 'env/env.dart';
 import 'helpers/observers.dart';
-import 'routes.dart';
+import 'routes.dart' show routerConfig;
+import 'sentry.dart';
 import 'theme.dart';
 
 void main() async {
-  if (kIsWeb || kIsWasm) {
-    return runZonedGuarded(() async {
-      await SentryFlutter.init(
-        (options) => options.dsn = Env.sentryDsn,
-      );
-
-      runApp(MyApp());
-    }, (exception, stackTrace) async {
-      await Sentry.captureException(exception, stackTrace: stackTrace);
-    });
-  } else {
-    await SentryFlutter.init(
-      (options) => options.dsn = Env.sentryDsn,
-      appRunner: () => runApp(MyApp()),
-    );
-  }
+  return setupSentry(
+    () => runApp(const MyApp()),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  final GoRouter router;
-
-  MyApp({super.key})
-      : router = GoRouter(
-          routes: $appRoutes,
-          initialLocation: '/',
-          observers: [
-            SentryNavigatorObserver(),
-          ],
-        );
+  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -60,7 +33,7 @@ class MyApp extends StatelessWidget {
         darkTheme: theme.dark(),
         themeMode:
             brightness == Brightness.light ? ThemeMode.light : ThemeMode.dark,
-        routerConfig: router,
+        routerConfig: routerConfig,
       ),
     );
   }
